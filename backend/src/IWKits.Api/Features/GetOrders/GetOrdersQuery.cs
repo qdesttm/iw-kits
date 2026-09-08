@@ -1,14 +1,10 @@
-namespace IWKits.Api.Features.GetOrders;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Features.GetOrders;
+
 public sealed record GetOrdersQuery
 (
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[property: FromQuery(Name="min_total_amount")]
 	decimal? MinTotalAmount,
 	[property: FromQuery(Name="max_total_amount")]
@@ -28,6 +24,4 @@ public sealed record GetOrdersQuery
 	int? PageSize,
 	[property: FromQuery(Name="page")]
 	int? Page
-
-	// ------------------------------------------------------------------------------------------------------<
 );

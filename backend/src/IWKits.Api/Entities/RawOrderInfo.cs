@@ -1,14 +1,10 @@
-namespace IWKits.Api.Entities;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Entities;
+
 public sealed class RawOrderInfo
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[JsonPropertyName("id")]
 	[CsvHelper.Configuration.Attributes.Name("id")]
 	public ulong Id { get; set; }
@@ -28,6 +24,4 @@ public sealed class RawOrderInfo
 	[JsonPropertyName("timestamp")]
 	[CsvHelper.Configuration.Attributes.Name("timestamp")]
 	public DateTime Timestamp { get; set; }
-
-	// ------------------------------------------------------------------------------------------------------<
 }

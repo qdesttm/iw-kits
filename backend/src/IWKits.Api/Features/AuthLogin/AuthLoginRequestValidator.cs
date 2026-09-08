@@ -1,13 +1,9 @@
-namespace IWKits.Api.Features.AuthLogin;
-
-// Namespaces used by this file
 using FluentValidation;
 
-// Main content of the file
+namespace IWKits.Api.Features.AuthLogin;
+
 public sealed class AuthLoginRequestValidator : AbstractValidator<AuthLoginRequest>
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	public AuthLoginRequestValidator()
 	{
 		RuleFor(x => x.Username)
@@ -18,6 +14,4 @@ public sealed class AuthLoginRequestValidator : AbstractValidator<AuthLoginReque
 			.NotEmpty().NotNull()
 			.WithMessage("Password is required.");
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

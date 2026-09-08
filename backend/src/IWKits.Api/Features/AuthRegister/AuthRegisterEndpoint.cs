@@ -1,6 +1,3 @@
-namespace IWKits.Api.Features.AuthRegister;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
@@ -16,12 +13,11 @@ using FluentValidation;
 using MongoDB.Driver;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Features.AuthRegister;
+
 public static class AuthRegisterEndpoint
 {
 	public const string Endpoint = "/auth/register";
-
-	// ^ ----------------------------------------------------------------------------------------------------<
 
 	public static void MapAuthRegisterEndpoint(this IEndpointRouteBuilder builder)
 	{
@@ -30,8 +26,6 @@ public static class AuthRegisterEndpoint
 			.Produces(400)
 			.WithName("AuthRegister");
 	}
-
-	// @ ----------------------------------------------------------------------------------------------------<
 
 	private static async Task<IResult> AuthRegisterHandlerAsync
 	(
@@ -52,7 +46,6 @@ public static class AuthRegisterEndpoint
 			return Results.BadRequest(respond);
 		}
 
-		// Use filter to find if requester user exists in registered users database
 		var filter = Builders<UserInfo>.Filter.Eq(x => x.Username, request.Username);
 		var userExists = await authDatabase.Users.Find(filter).AnyAsync(ct);
 
@@ -62,7 +55,6 @@ public static class AuthRegisterEndpoint
 			return Results.Json(respond, statusCode: 400);
 		}
 
-		// Create info for new user and cache it's password
 		var hashpass = securityService.HashPassword(request.Password);
 
 		var userInfo = new UserInfo()
@@ -73,10 +65,8 @@ public static class AuthRegisterEndpoint
 			Role     = "user"
 		};
 
-		// Store created user info to the database
 		await authDatabase.Users.InsertOneAsync(userInfo, null, ct);
 
-		// Create session info object using session service and received user info
 		var createResult = await sessionService.CreateSessionAsync(userInfo, ct);
 
 		return Results.Ok<AuthRegisterRespond>(new
@@ -86,6 +76,4 @@ public static class AuthRegisterEndpoint
 			User        : userInfo
 		));
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

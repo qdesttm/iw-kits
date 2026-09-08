@@ -1,6 +1,3 @@
-namespace IWKits.Api.Features.AuthLogin;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
@@ -15,12 +12,11 @@ using System.Threading;
 using FluentValidation;
 using MongoDB.Driver;
 
-// Main content of the file
+namespace IWKits.Api.Features.AuthLogin;
+
 public static class AuthLoginEndpoint
 {
 	public const string Endpoint = "/auth/login";
-
-	// ^ ----------------------------------------------------------------------------------------------------<
 
 	public static void MapAuthLoginEndpoint(this IEndpointRouteBuilder builder)
 	{
@@ -29,8 +25,6 @@ public static class AuthLoginEndpoint
 			.Produces(401)
 			.WithName("AuthLogin");
 	}
-
-	// @ ----------------------------------------------------------------------------------------------------<
 
 	private static async Task<IResult> AuthLoginHandlerAsync
 	(
@@ -51,18 +45,15 @@ public static class AuthLoginEndpoint
 			return Results.BadRequest(respond);
 		}
 
-		// Use filter to find if requester user exists in registered users database
 		var filter = Builders<UserInfo>.Filter.Eq(x => x.Username, request.Username);
 		var userInfo = await authDatabase.Users.Find(filter).FirstOrDefaultAsync(ct);
 
-		// Return 401 Unauthorized if user not found or password verification is failed
 		if ( userInfo is null || !securityService.VerifyPassword(userInfo.Password, request.Password) )
 		{
 			var respond = new AuthLoginRespond(null, null, null, "Invalid credentials");
 			return Results.Json(respond, statusCode: 401);
 		}
 
-		// Create session info object using session service and received user info
 		var createResult = await sessionService.CreateSessionAsync(userInfo, ct);
 
 		return Results.Ok<AuthLoginRespond>(new
@@ -72,6 +63,4 @@ public static class AuthLoginEndpoint
 			User        : userInfo
 		));
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

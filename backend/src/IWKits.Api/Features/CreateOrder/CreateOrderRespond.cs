@@ -1,10 +1,8 @@
-namespace IWKits.Api.Features.CreateOrder;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 using IWKits.Api.Entities;
 
-// Main content of the file
+namespace IWKits.Api.Features.CreateOrder;
+
 public sealed record CreateOrderRespond
 (
 	[property: JsonPropertyName("created_order")]

@@ -1,15 +1,11 @@
-namespace IWKits.Api.Entities;
-
-// Namespaces used by this file
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-// Main content of the file
+namespace IWKits.Api.Entities;
+
 [BsonIgnoreExtraElements]
 public record TaxRateInfo
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[BsonElement("zip_code")]
 	public int ZipCode { get; init; } = int.MaxValue;
 
@@ -32,6 +28,4 @@ public record TaxRateInfo
 	[BsonElement("estimated_special_rate")]
 	[BsonRepresentation(BsonType.Decimal128)]
 	public decimal EstimatedSpecialRate { get; init; } = 0.0m;
-
-	// ------------------------------------------------------------------------------------------------------<
 }

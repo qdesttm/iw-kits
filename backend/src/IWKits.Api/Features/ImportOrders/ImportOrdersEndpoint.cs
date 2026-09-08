@@ -1,6 +1,3 @@
-namespace IWKits.Api.Features.ImportOrders;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
@@ -20,12 +17,11 @@ using System.Linq;
 using System.IO;
 using CsvHelper;
 
-// Main content of the file
+namespace IWKits.Api.Features.ImportOrders;
+
 public static class ImportOrdersEndpoint
 {
 	public const string Endpoint = "orders/import";
-
-	// ^ ----------------------------------------------------------------------------------------------------<
 
 	public static void MapImportOrdersEndpoint(this IEndpointRouteBuilder builder)
 	{
@@ -36,8 +32,6 @@ public static class ImportOrdersEndpoint
 			.Produces(400)
 			.DisableAntiforgery();
 	}
-
-	// @ ----------------------------------------------------------------------------------------------------<
 
 	private static async Task<IResult> ImportOrdersHandlerAsync
 	(
@@ -51,21 +45,16 @@ public static class ImportOrdersEndpoint
 			return Results.BadRequest("File is empty or missing.");
 		}
 
-		// Get chunk size from the options constrains section
 		int importChunkSize = constraints.Value.ImportChunkSize;
 
-		// Allow unordered insertion to speed up insertion process
 		var insertOptions = new InsertManyOptions() { IsOrdered = false };
 
-		// List for errors and total imports counter
 		var errors = new List<string>();
 		int importedTotal = 0;
 
-		// Create file reader and use it to create csv reader instance
 		using var reader = new StreamReader( file.OpenReadStream() );
 		using var csv    = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-		// Read record from csv file line by line using asyncronouns reader
 		var chunks = csv.GetRecordsAsync<RawOrderInfo>(ct).Chunk(importChunkSize);
 		var options = new ParallelOptions() { CancellationToken = ct, MaxDegreeOfParallelism = 2 };
 
@@ -74,7 +63,6 @@ public static class ImportOrdersEndpoint
 			var tasks = chunk.Select(orderProcess.ProcessAsync);
 			var toInsert = new List<OrderInfo>(importChunkSize);
 
-			// Filter results for error message and order infos
 			foreach (var result in await Task.WhenAll(tasks))
 			{
 				if ( result.HasError )
@@ -87,7 +75,6 @@ public static class ImportOrdersEndpoint
 				}
 			}
 
-			// Insert orders and atomicaly increase total counter
 			if ( toInsert.Count > 0 )
 			{
 				await dataDatabase.Orders.InsertManyAsync(toInsert, insertOptions, token);
@@ -95,10 +82,7 @@ public static class ImportOrdersEndpoint
 			}
 		});
 
-		// Send respond with results to the client
 		var respond = new ImportOrdersRespond(importedTotal, errors);
 		return Results.Ok(respond);
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

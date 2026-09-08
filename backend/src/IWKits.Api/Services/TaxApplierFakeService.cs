@@ -1,25 +1,18 @@
-namespace IWKits.Api.Services;
-
-// Namespaces used by this file
 using IWKits.Api.Entities;
 
-// Main content of the file
+namespace IWKits.Api.Services;
+
 public sealed class TaxApplierFakeService : ITaxApplierService
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	public TaxApplyResult Apply(TaxRateInfo taxRate, GeoZoneInfo geoZone, decimal subtotal)
 	{
-		// Define fake tax rates
 		decimal stateRate = 0.04m;
 		decimal cityRate = 0.025m;
 		decimal specialRate = 0.015m;
 
-		// Find fake composite rate and calculate amount
 		decimal compositeRate = stateRate + cityRate + specialRate;
 		decimal taxAmount = System.Math.Round(subtotal * compositeRate, 2);
 
-		// Create tax calculations result
 		return new TaxApplyResult()
 		{
 			CompositeTaxRate = compositeRate,
@@ -59,6 +52,4 @@ public sealed class TaxApplierFakeService : ITaxApplierService
 			]
 		};
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

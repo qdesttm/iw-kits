@@ -1,9 +1,7 @@
-namespace IWKits.Api.Features.CreateOrder;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 
-// Main content of the file
+namespace IWKits.Api.Features.CreateOrder;
+
 public sealed record CreateOrderRequest
 (
 	[property: JsonPropertyName("longitude")]

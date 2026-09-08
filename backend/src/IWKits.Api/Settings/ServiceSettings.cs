@@ -1,14 +1,10 @@
-namespace IWKits.Api.Settings;
-
-// Namespaces used by this file
 using System.ComponentModel.DataAnnotations;
 
-// Main content of the file
+namespace IWKits.Api.Settings;
+
 public sealed class ServiceSettings
 {
 	public const string SectionName = "Services";
-
-	// ^ ----------------------------------------------------------------------------------------------------<
 
 	[Required, RegularExpression("default|fake")]
 	public string TaxApplier { get; set; } = string.Empty;
@@ -18,6 +14,4 @@ public sealed class ServiceSettings
 
 	[Required, RegularExpression("default|fake")]
 	public string GeoLocation { get; set; } = string.Empty;
-
-	// ------------------------------------------------------------------------------------------------------<
 }

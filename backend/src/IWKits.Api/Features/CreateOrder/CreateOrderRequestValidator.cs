@@ -1,13 +1,9 @@
-namespace IWKits.Api.Features.CreateOrder;
-
-// Namespaces used by this file
 using FluentValidation;
 
-// Main content of the file
+namespace IWKits.Api.Features.CreateOrder;
+
 public sealed class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	public CreateOrderRequestValidator()
 	{
 		RuleFor(x => x.Longitude)
@@ -22,6 +18,4 @@ public sealed class CreateOrderRequestValidator : AbstractValidator<CreateOrderR
 			.GreaterThan(0)
 			.WithMessage("Subtotal must be greater than zero.");
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

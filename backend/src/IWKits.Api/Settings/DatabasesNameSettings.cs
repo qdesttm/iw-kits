@@ -1,13 +1,9 @@
-namespace IWKits.Api.Settings;
-
-// Namespaces used by this file
 using System.ComponentModel.DataAnnotations;
 
-// Main content of the file
+namespace IWKits.Api.Settings;
+
 public sealed class DatabasesNameSettings
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[Required, MinLength(5)]
 	public string Data { get; set; } = string.Empty;
 
@@ -16,6 +12,4 @@ public sealed class DatabasesNameSettings
 
 	[Required, MinLength(5)]
 	public string Core { get; set; } = string.Empty;
-
-	// ------------------------------------------------------------------------------------------------------<
 }

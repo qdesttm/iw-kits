@@ -1,10 +1,8 @@
-namespace IWKits.Api.Features.ImportOrders;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
-// Main content of the file
+namespace IWKits.Api.Features.ImportOrders;
+
 public sealed record ImportOrdersRespond
 (
 	[property: JsonPropertyName("imported_total")]

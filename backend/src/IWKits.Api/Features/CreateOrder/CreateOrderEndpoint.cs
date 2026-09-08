@@ -1,6 +1,3 @@
-namespace IWKits.Api.Features.CreateOrder;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
@@ -14,12 +11,11 @@ using System.Threading;
 using FluentValidation;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Features.CreateOrder;
+
 public static class CreateOrderEndpoint
 {
 	public const string Endpoint = "/orders";
-
-	// ^ ----------------------------------------------------------------------------------------------------<
 
 	public static void MapCreateOrderEndpoint(this IEndpointRouteBuilder builder)
 	{
@@ -28,8 +24,6 @@ public static class CreateOrderEndpoint
 			.Produces<CreateOrderRespond>(200)
 			.WithName("CreateOrder");
 	}
-
-	// @ ----------------------------------------------------------------------------------------------------<
 
 	private static async Task<IResult> CreateOrderHandlerAsync
 	(
@@ -48,7 +42,6 @@ public static class CreateOrderEndpoint
 			return Results.BadRequest(respond);
 		}
 
-		// Calculate tax info to include it into the new order info
 		var rawOrderInfo = new RawOrderInfo()
 		{
 			Id = 0,
@@ -59,10 +52,8 @@ public static class CreateOrderEndpoint
 			Timestamp = DateTime.UtcNow
 		};
 
-		// Use order process service to apply taxes to the creater raw order
 		var processResult = await orderProcess.ProcessAsync(rawOrderInfo);
 
-		// Return response with error message if one is defined
 		if ( processResult.HasError )
 		{
 			var respond = new CreateOrderRespond(null, processResult.ErrorMessage);
@@ -72,14 +63,10 @@ public static class CreateOrderEndpoint
 		{
 			OrderInfo orderInfo = processResult.OrderInfo;
 
-			// Insert created order into the database
 			await dataDatabase.Orders.InsertOneAsync(orderInfo, null, ct);
 
-			// Create response and send it to the client
 			var respond = new CreateOrderRespond(orderInfo, null);
 			return Results.Created($"{Endpoint}/{orderInfo.Id}", respond);
 		}
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

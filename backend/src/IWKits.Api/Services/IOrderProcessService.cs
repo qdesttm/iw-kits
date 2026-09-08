@@ -1,15 +1,9 @@
-namespace IWKits.Api.Services;
-
-// Namespaces used by this file
 using System.Threading.Tasks;
 using IWKits.Api.Entities;
 
-// Main content of the file
+namespace IWKits.Api.Services;
+
 public interface IOrderProcessService
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	Task<OrderProcessResult> ProcessAsync(RawOrderInfo rawOrder);
-
-	// ------------------------------------------------------------------------------------------------------<
 }

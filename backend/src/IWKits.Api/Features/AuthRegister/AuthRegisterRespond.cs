@@ -1,10 +1,8 @@
-namespace IWKits.Api.Features.AuthRegister;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 using IWKits.Api.Entities;
 
-// Main content of the file
+namespace IWKits.Api.Features.AuthRegister;
+
 public sealed record AuthRegisterRespond
 (
 	[property: JsonPropertyName("access_token")]

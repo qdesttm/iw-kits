@@ -1,6 +1,3 @@
-namespace IWKits.Api;
-
-// Namespaces used by this file
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -16,28 +13,22 @@ using FluentValidation;
 using MongoDB.Driver;
 using System.Text;
 
-// Main content of the file
-public static class IWKitsApi
-{
-	// ^ ----------------------------------------------------------------------------------------------------<
+namespace IWKits.Api;
 
+public static class Program
+{
 	private static async Task Main()
 	{
 		var builder = WebApplication.CreateBuilder();
 
-		// Register services and build application
 		builder.AddApplicationServices();
 		var application = builder.Build();
 
-		// Register endpoints and pipelines
 		application.MapApplicationEndpoints();
 		application.UseApplicationPipelines();
 
-		// Start the web application
 		await application.RunAsync();
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 
 	private static void AddApplicationServices(this WebApplicationBuilder builder)
 	{
@@ -45,14 +36,12 @@ public static class IWKitsApi
 		var env = builder.Environment;
 		var srv = builder.Services;
 
-		// Add general services to application
 		srv.AddControllers();
 		srv.AddAuthorization();
 		srv.AddEndpointsApiExplorer();
 		srv.AddMemoryCache();
 		srv.AddSwaggerGen();
 
-		// Register validator services
 		builder.Services.AddValidatorsFromAssemblyContaining
 			<Features.AuthLogin.AuthLoginRequestValidator>();
 		builder.Services.AddValidatorsFromAssemblyContaining
@@ -62,7 +51,6 @@ public static class IWKitsApi
 		builder.Services.AddValidatorsFromAssemblyContaining
 			<Features.CreateOrder.CreateOrderRequestValidator>();
 
-		// Add authorization related services
 		builder.Services
 			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			.AddJwtBearer();
@@ -89,7 +77,6 @@ public static class IWKitsApi
 				};
 			});
 
-		// Add options-related services
 		srv.AddOptions<MongoDBSettings>()
 			.Bind( cfg.GetSection(MongoDBSettings.SectionName) )
 			.ValidateDataAnnotations()
@@ -115,7 +102,6 @@ public static class IWKitsApi
 			.ValidateDataAnnotations()
 			.ValidateOnStart();
 
-		// Add database-related services
 		srv.AddSingleton<IMongoClient>((sp) =>
 		{
 			var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
@@ -126,10 +112,8 @@ public static class IWKitsApi
 			string hostname = Utils.GetRequiredEnv("DB_CONNECTION_HOSTNAME");
 			string hostport = Utils.GetRequiredEnv("DB_CONNECTION_HOSTPORT");
 
-			// Build connection string parameters string
 			var parameters = $"?authSource={settings.AuthSource}&maxPoolSize={settings.MaxPoolSize}";
 
-			// Create connection string with username, password and hostname variables
 			return new MongoClient(
 				$"mongodb://{username}:{password}@{hostname}:{hostport}/{parameters}"
 			);
@@ -139,7 +123,6 @@ public static class IWKitsApi
 		{
 			var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
 
-			// Get running mongo client and create context
 			var client = sp.GetRequiredService<IMongoClient>();
 			return new(client, settings.Databases.Auth);
 		});
@@ -148,7 +131,6 @@ public static class IWKitsApi
 		{
 			var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
 
-			// Get running mongo client and create context
 			var client = sp.GetRequiredService<IMongoClient>();
 			return new(client, settings.Databases.Core);
 		});
@@ -157,12 +139,10 @@ public static class IWKitsApi
 		{
 			var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
 
-			// Get running mongo client and create context
 			var client = sp.GetRequiredService<IMongoClient>();
 			return new(client, settings.Databases.Data);
 		});
 
-		// Add other singleton services
 		srv.AddSingleton<IOrderProcessService, OrderProcessService>();
 		srv.AddSingleton<IGeoLocationService, GeoLocationService>();
 
@@ -192,10 +172,8 @@ public static class IWKitsApi
 			return new SessionService(securityService, settings, authDatabase);
 		});
 
-		// Add hosted services
 		srv.AddHostedService<GeoLocationCacheWarmupService>();
 	}
-
 
 	private static void MapApplicationEndpoints(this WebApplication application)
 	{
@@ -210,22 +188,17 @@ public static class IWKitsApi
 		Features.ImportOrders.ImportOrdersEndpoint.MapImportOrdersEndpoint(apiV1);
 	}
 
-
 	private static void UseApplicationPipelines(this WebApplication application)
 	{
 		var environment = application.Environment;
 
-		// Register development-only pipelanes
 		if ( environment.IsDevelopment() )
 		{
 			application.UseSwaggerUI();
 			application.UseSwagger();
 		}
 
-		// Register production-related pipelines
 		application.UseHttpsRedirection();
 		application.UseAuthorization();
 	}
-
-	// ------------------------------------------------------------------------------------------------------<
 }

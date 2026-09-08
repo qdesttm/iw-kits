@@ -1,15 +1,11 @@
-namespace IWKits.Api.Entities;
-
-// Namespaces used by this file
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 
-// Main content of the file
+namespace IWKits.Api.Entities;
+
 public sealed record TaxBreakdown
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[BsonElement("state_rate")]
 	[JsonPropertyName("state_rate")]
 	[BsonRepresentation(BsonType.Decimal128)]
@@ -29,6 +25,4 @@ public sealed record TaxBreakdown
 	[JsonPropertyName("special_rate")]
 	[BsonRepresentation(BsonType.Decimal128)]
 	public decimal SpecialRate { get; init; } = 0.0m;
-
-	// ------------------------------------------------------------------------------------------------------<
 }

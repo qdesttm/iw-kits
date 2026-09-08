@@ -1,10 +1,8 @@
-namespace IWKits.Api.Features.GetOrders;
-
-// Namespaces used by this file
 using System.Text.Json.Serialization;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Features.GetOrders;
+
 public sealed record GetOrdersOptions
 (
 	[property: JsonPropertyName("min_total_amount")]

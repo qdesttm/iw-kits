@@ -1,17 +1,13 @@
-namespace IWKits.Api.Entities;
-
-// Namespaces used by this file
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using System;
 
-// Main content of the file
+namespace IWKits.Api.Entities;
+
 public sealed record OrderInfo
 {
-	// ^ ----------------------------------------------------------------------------------------------------<
-
 	[BsonElement("_id")]
 	[JsonPropertyName("id")]
 	[BsonRepresentation(BsonType.String)]
@@ -57,6 +53,4 @@ public sealed record OrderInfo
 	[JsonPropertyName("timestamp")]
 	[BsonDateTimeOptions(Kind=DateTimeKind.Utc)]
 	public DateTime Timestamp { get; init; } = DateTime.MinValue;
-
-	// ------------------------------------------------------------------------------------------------------<
 }
