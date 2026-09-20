@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+
+		<AssemblyName>IWKits.Core.Common</AssemblyName>
+		<RootNamespace>IWKits.Core.Common</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Bson" Version="3.6.0" />
+	</ItemGroup>
+
+</Project>
