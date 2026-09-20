@@ -8,4 +8,8 @@
 		<RootNamespace>IWKits.Core.Data</RootNamespace>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Bson" Version="3.6.0" />
+	</ItemGroup>
+
 </Project>
