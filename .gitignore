@@ -1,0 +1,55 @@
+# Logs ignores
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Obsidian ignores
+.obsidian/**
+
+# MongoDB ignores
+mongodb/**
+
+# Api ignores
+**/bin/
+**/obj/
+**/TestResults/
+**/*.user
+**/*.suo
+**/*.cache
+**/*.pdb
+
+# Frontend ignores
+node_modules
+dist
+dist-ssr
+*.local
+.eslintcache
+.vite
+
+# Docker ignores
+**/docker-compose.override.yml
+
+# Coverage ignores
+coverage/
+*.coverage
+*.coveragexml
+
+# Publish output
+publish/
+
+# Samples
+sample-input.csv
+workin-input.csv
+
+# Editor directories and files
+.idea
+.DS_Store
+*.ntvs*
+*.njsproj
+*.sw?
+
+# Other files
+desktop.ini
+mongodb.rar
+mongodb.zip
