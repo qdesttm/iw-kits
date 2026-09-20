@@ -7,7 +7,7 @@ namespace IWKits.Core.Data.Entities;
 /// <summary>
 /// Represents the database entity for a user session.
 /// </summary>
-public sealed class SessionEntity
+public sealed class UserSessionEntity
 {
 	/// <summary>
 	/// Gets or initializes the unique identifier for the session.

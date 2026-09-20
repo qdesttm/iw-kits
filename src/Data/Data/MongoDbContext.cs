@@ -21,9 +21,9 @@ public sealed class MongoDbContext
 	}
 
 	/// <summary>
-	/// The data collection to be used to operate with <see cref="SessionEntity"/> entities.
+	/// The data collection to be used to operate with <see cref="UserSessionEntity"/> entities.
 	/// </summary>
-	public IMongoCollection<SessionEntity> Sessions => _db.GetCollection<SessionEntity>("sessions");
+	public IMongoCollection<UserSessionEntity> UserSessions => _db.GetCollection<UserSessionEntity>("user_sessions");
 
 	/// <summary>
 	/// The data collection to be used to operate with <see cref="UserEntity"/> entities.
