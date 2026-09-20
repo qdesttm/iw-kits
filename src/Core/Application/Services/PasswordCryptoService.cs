@@ -1,6 +1,6 @@
 namespace IWKits.Core.Application.Services;
 
-public sealed class PasswordCryptoService : IPasswordCryptoService
+internal sealed class PasswordCryptoService : IPasswordCryptoService
 {
 	public string GetHash(string password)
 		=> BCrypt.Net.BCrypt.HashPassword(password);

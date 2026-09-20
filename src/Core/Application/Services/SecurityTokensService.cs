@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IWKits.Core.Application.Services;
 
-public sealed class SecurityTokensService(
+internal sealed class SecurityTokensService(
 	IOptions<SecurityTokensOptions> options) :
 	ISecurityTokensService
 {
