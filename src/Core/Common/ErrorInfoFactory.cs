@@ -27,12 +27,12 @@ public static class ErrorInfoFactory
 			"The session has expired. Please log in again.");
 
 	/// <summary>
-	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the user associated with the session no longer exists.
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the requested user was not found.
 	/// </summary>
 	/// <param name="userId">The unique identifier of the user.</param>
 	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
 	public static ErrorInfo CreateUserNotFound(Guid userId)
 		=> new(
 			ErrorCode.UserNotFound,
-			$"The user with ID '{userId}' associated with this session was not found.");
+			$"The user with ID '{userId}' was not found.");
 }

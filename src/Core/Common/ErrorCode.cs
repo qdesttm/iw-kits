@@ -16,7 +16,7 @@ public static class ErrorCode
 	public const string SessionExpired = "session_expired";
 
 	/// <summary>
-	/// The error code representing a situation when the user associated with the session no longer exists.
+	/// The error code representing a situation when the requested user is not found.
 	/// </summary>
 	public const string UserNotFound = "user_not_found";
 }
