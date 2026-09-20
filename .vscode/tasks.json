@@ -1,0 +1,47 @@
+{
+	"version": "2.0.0",
+
+	"tasks": [
+		{
+			"label": "build-api",
+			"command": "dotnet",
+			"type": "process",
+
+			"args": [
+				"build",
+				"${config:iwkits.apiPath}/IWKits.Api.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+
+			"problemMatcher": "$msCompile"
+		},
+
+		{
+			"label": "start-mdb",
+			"type" : "process",
+
+			"isBackground": true,
+			"command" : "mongod",
+
+			"args" : [
+				"--dbpath", "${config:iwkits.mdbPath}",
+				"--port"  , "${config:iwkits.mdbPort}",
+				"${input:auth}", "--quiet"
+			],
+		},
+	],
+
+	"inputs": [
+		{
+			"id": "auth",
+			"description": "Select authentification flag",
+
+			"type": "pickString",
+			"options": [
+				"--auth"  ,
+				"--noauth"
+			]
+		}
+	]
+}

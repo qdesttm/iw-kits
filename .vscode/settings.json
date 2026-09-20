@@ -1,0 +1,130 @@
+{
+	"iwkits.apiPath" : "${workspaceFolder}/backend/src/IWKits.Api",
+
+	"iwkits.mongoDbPath" : "${workspaceFolder}/mongodb",
+	"iwkits.mongoDbPort" : "27017",
+
+	"files.exclude": {
+		"desktop.ini" : true,
+		"**/bin": true,
+		"**/obj": true,
+	},
+
+	"folder-color.pathColors": [
+		{
+			"folderPath": ".git",
+			"color": "foldercolorizer.color_d75f5f",
+			"badge": "↻"
+		},
+		{
+			"folderPath": ".obsidian",
+			"color": "foldercolorizer.color_8787ff",
+			"badge": "🗊"
+		},
+		{
+			"folderPath": ".vscode",
+			"color": "foldercolorizer.color_5f87d7",
+			"badge": "⟐"
+		},
+		{
+			"folderPath": ".gitattributes",
+			"color": "foldercolorizer.color_d75f5f",
+			"badge": "↻"
+		},
+		{
+			"folderPath": ".gitignore",
+			"color": "foldercolorizer.color_d75f5f",
+			"badge": "↻"
+		},
+		{
+			"folderPath": ".editorconfig",
+			"color": "foldercolorizer.color_d7d7ff",
+			"badge": "≡"
+		},
+		{
+			"folderPath": "AspNetCore",
+			"color": "foldercolorizer.color_008787",
+			"badge": "⚙"
+		},
+		{
+			"folderPath": "Api",
+			"color": "foldercolorizer.color_008787",
+			"badge": "⚙"
+		},
+		{
+			"folderPath": "Client",
+			"color": "foldercolorizer.color_af87af",
+			"badge": "👁"
+		},
+		{
+			"folderPath": "Core",
+			"color": "foldercolorizer.color_87afd7",
+			"badge": "⌬"
+		},
+		{
+			"folderPath": "Data",
+			"color": "foldercolorizer.color_afaf00",
+			"badge": "▣"
+		},
+		{
+			"folderPath": "src",
+			"color": "foldercolorizer.color_008787",
+			"badge": "⚙"
+		},
+		{
+			"folderPath": "mongodb",
+			"color": "foldercolorizer.color_5faf87",
+			"badge": "⊢"
+		},
+		{
+			"folderPath": ".dockerignore",
+			"color": "foldercolorizer.color_5f87af",
+			"badge": "×"
+		},
+		{
+			"folderPath": ".env.dev",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
+			"folderPath": ".env",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
+			"folderPath": ".env.example",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
+			"folderPath": ".env.loc",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
+			"extension": "slnx",
+			"color": "foldercolorizer.color_875faf",
+			"badge": "⥼"
+		},
+		{
+			"extension": "csproj",
+			"color": "foldercolorizer.color_875faf",
+			"badge": "⊛"
+		},
+		{
+			"extension": "csv",
+			"color": "foldercolorizer.color_875faf",
+			"badge": "·"
+		},
+		{
+			"folderPath": "docker-compose.yaml",
+			"color": "foldercolorizer.color_0087af",
+			"badge": "≈"
+		},
+		{
+			"folderPath": "Dockerfile",
+			"color": "foldercolorizer.color_5f87af",
+			"badge": "☰"
+		}
+	]
+}
