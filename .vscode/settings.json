@@ -63,7 +63,7 @@
 		},
 		{
 			"folderPath": "Data",
-			"color": "foldercolorizer.color_afaf00",
+			"color": "foldercolorizer.color_d7afff",
 			"badge": "▣"
 		},
 		{
@@ -80,26 +80,6 @@
 			"folderPath": ".dockerignore",
 			"color": "foldercolorizer.color_5f87af",
 			"badge": "×"
-		},
-		{
-			"folderPath": ".env.dev",
-			"color": "foldercolorizer.color_d7af87",
-			"badge": "⌔"
-		},
-		{
-			"folderPath": ".env",
-			"color": "foldercolorizer.color_d7af87",
-			"badge": "⌔"
-		},
-		{
-			"folderPath": ".env.example",
-			"color": "foldercolorizer.color_d7af87",
-			"badge": "⌔"
-		},
-		{
-			"folderPath": ".env.loc",
-			"color": "foldercolorizer.color_d7af87",
-			"badge": "⌔"
 		},
 		{
 			"extension": "slnx",
