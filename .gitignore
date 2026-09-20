@@ -10,7 +10,8 @@ yarn-error.log*
 # MongoDB ignores
 mongodb/**
 
-# Api ignores
+# Backend ignores
+appsettings.Development.json
 **/bin/
 **/obj/
 **/TestResults/
