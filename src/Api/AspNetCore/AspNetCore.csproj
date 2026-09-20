@@ -14,10 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Riok.Mapperly" Version="4.3.1" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Remove="appsettings.json" />
 
 		<None Include="appsettings.json">
