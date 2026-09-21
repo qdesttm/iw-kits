@@ -28,7 +28,7 @@ internal sealed partial class ServiceExceptionHandler(
 		{
 			case ServiceException serviceException:
 				statusCode = MapServiceExceptionStatusCode(serviceException.Info.Code);
-				errorInfo = ErrorInfoFactory.CreateInternalServerError();
+				errorInfo = serviceException.Info;
 
 				break;
 
