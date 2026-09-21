@@ -95,6 +95,15 @@ public static class ErrorInfoFactory
 			$"Tax rate details are currently unavailable for the identified area with zip code '{zipCode}'.");
 
 	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the uploaded file is empty or missing.
+	/// </summary>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateInvalidFile()
+		=> new(
+			ErrorCode.InvalidFile,
+			"The uploaded file is empty, missing, or corrupted.");
+
+	/// <summary>
 	/// Creates a new <see cref="ErrorInfo"/> instance encapsulating an unhandled system exception message.
 	/// </summary>
 	/// <param name="message">The raw technical or system exception message.</param>

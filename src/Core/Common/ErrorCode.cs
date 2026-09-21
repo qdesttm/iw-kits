@@ -51,6 +51,11 @@ public static class ErrorCode
 	public const string TaxDataUnavailable = "tax_data_unavailable";
 
 	/// <summary>
+	/// The error code representing a situation when the uploaded file is empty, corrupted, or missing.
+	/// </summary>
+	public const string InvalidFile = "invalid_file";
+
+	/// <summary>
 	/// The error code representing an unexpected system failure or unhandled operation exception.
 	/// </summary>
 	public const string OperationFailed = "operation_failed";
