@@ -34,7 +34,7 @@ internal sealed class ImportOrdersEndpoint : IEndpoint
 	}
 
 	private static async Task<Ok<ImportOrdersResponse>> Handle(
-		[FromForm] IFormFile file,
+		IFormFile file,
 		IMediator mediator,
 		CancellationToken cancellationToken)
 	{
