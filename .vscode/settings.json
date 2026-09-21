@@ -42,13 +42,18 @@
 			"badge": "≡"
 		},
 		{
+			"folderPath": "Dockerfile",
+			"color": "foldercolorizer.color_5f87af",
+			"badge": "☰"
+		},
+		{
 			"folderPath": "AspNetCore",
-			"color": "foldercolorizer.color_008787",
+			"color": "foldercolorizer.color_5f875f",
 			"badge": "⚙"
 		},
 		{
 			"folderPath": "Api",
-			"color": "foldercolorizer.color_008787",
+			"color": "foldercolorizer.color_5f875f",
 			"badge": "⚙"
 		},
 		{
@@ -100,11 +105,6 @@
 			"folderPath": "docker-compose.yaml",
 			"color": "foldercolorizer.color_0087af",
 			"badge": "≈"
-		},
-		{
-			"folderPath": "Dockerfile",
-			"color": "foldercolorizer.color_5f87af",
-			"badge": "☰"
 		}
 	]
 }
