@@ -1,6 +1,6 @@
 {
-	"iWKits.aspNetCore" : "${workspaceFolder}/src/Api/AspNetCore",
-	"iWKits.mongoDbPath" : "${workspaceFolder}/mongodb",
+	"iWKits.aspNetCore" : "${workspaceFolder}\\src\\Api\\AspNetCore",
+	"iWKits.mongoDbPath" : "${workspaceFolder}\\mongodb",
 	"iWKits.mongoDbPort" : "27017",
 	"files.exclude": {
 		"desktop.ini" : true,
