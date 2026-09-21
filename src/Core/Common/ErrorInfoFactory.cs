@@ -18,6 +18,15 @@ public static class ErrorInfoFactory
 			"The provided username or password is incorrect.");
 
 	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the requested username is already taken.
+	/// </summary>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateUsernameAlreadyTaken()
+		=> new(
+			ErrorCode.UsernameAlreadyTaken,
+			"This username is already taken by another account.");
+
+	/// <summary>
 	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the provided refresh token was not found or is invalid.
 	/// </summary>
 	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>

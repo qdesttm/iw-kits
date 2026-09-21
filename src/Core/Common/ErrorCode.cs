@@ -11,6 +11,11 @@ public static class ErrorCode
 	public const string InvalidCredentials = "invalid_credentials";
 
 	/// <summary>
+	/// The error code representing a situation when the provided username is already registered in the system.
+	/// </summary>
+	public const string UsernameAlreadyTaken = "username_already_taken";
+
+	/// <summary>
 	/// The error code representing a situation when the provided refresh token is not found or invalid.
 	/// </summary>
 	public const string SessionNotFound = "session_not_found";
