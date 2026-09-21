@@ -1,4 +1,6 @@
+using IWKits.Core.Mongodb.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace IWKits.Core.Data.DependencyInjection;
@@ -12,20 +14,22 @@ public static class ServiceCollectionExtensions
 	/// Adds database services to the specified <see cref="IServiceCollection"/> using explicit connection parameters.
 	/// </summary>
 	/// <param name="services">The service collection to add the application services to.</param>
-	/// <param name="connectionString">The MongoDB server connection string.</param>
-	/// <param name="databaseName">The target MongoDB database name.</param>
 	/// <returns>The original <see cref="IServiceCollection"/> instance for chaining.</returns>
-	public static IServiceCollection AddDatabase(
-		this IServiceCollection services, string connectionString, string databaseName)
+	public static IServiceCollection AddDbContext(this IServiceCollection services)
 	{
-		var mongoClient = new MongoClient(connectionString);
+		services.AddSingleton<IMongoClient>(sp =>
+		{
+			var options = sp.GetRequiredService<IOptions<MongodbOptions>>();
 
-		services.AddSingleton<IMongoClient>(mongoClient);
+			return new MongoClient(options.Value.ConnectionString);
+		});
 
 		services.AddSingleton(sp =>
 		{
+			var options = sp.GetRequiredService<IOptions<MongodbOptions>>();
 			var client = sp.GetRequiredService<IMongoClient>();
-			return client.GetDatabase(databaseName);
+
+			return client.GetDatabase(options.Value.DatabaseName);
 		});
 
 		services.AddSingleton<MongoDbContext>();
