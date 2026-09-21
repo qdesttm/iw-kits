@@ -9,6 +9,15 @@ namespace IWKits.Core.Common;
 public static class ErrorInfoFactory
 {
 	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the authentication credentials are invalid.
+	/// </summary>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateInvalidCredentials()
+		=> new(
+			ErrorCode.InvalidCredentials,
+			"The provided username or password is incorrect.");
+
+	/// <summary>
 	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the provided refresh token was not found or is invalid.
 	/// </summary>
 	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>

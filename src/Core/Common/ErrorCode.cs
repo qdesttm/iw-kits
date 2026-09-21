@@ -6,6 +6,11 @@ namespace IWKits.Core.Common;
 public static class ErrorCode
 {
 	/// <summary>
+	/// The error code representing a situation when the provided username or password during authentication is invalid.
+	/// </summary>
+	public const string InvalidCredentials = "invalid_credentials";
+
+	/// <summary>
 	/// The error code representing a situation when the provided refresh token is not found or invalid.
 	/// </summary>
 	public const string SessionNotFound = "session_not_found";
