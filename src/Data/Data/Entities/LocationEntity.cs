@@ -49,5 +49,5 @@ public sealed class LocationEntity
 	/// Gets or initializes the GeoJSON 2D point containing longitude and latitude coordinates.
 	/// </summary>
 	[BsonElement("coordinates")]
-	public required GeoJsonPoint<GeoJson2DCoordinates> Coordinates { get; init; }
+	public required GeoJsonPoint<GeoJson2DGeographicCoordinates> Coordinates { get; init; }
 }

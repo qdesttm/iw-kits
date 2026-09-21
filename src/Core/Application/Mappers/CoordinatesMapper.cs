@@ -8,6 +8,9 @@ internal static partial class CoordinatesMapper
 	public static GeoJson2DGeographicCoordinates ToGeoJson2DGeographicCoordinates(this Coordinate coordinate)
 		=> new(coordinate.X, coordinate.Y);
 
-	public static Coordinate ToCoordinate(this GeoJson2DGeographicCoordinates coordinates)
+	public static Coordinate ToCoordinates(this GeoJson2DGeographicCoordinates coordinates)
 		=> new(coordinates.Longitude, coordinates.Latitude);
+
+	public static Coordinate ToCoordinates(this GeoJsonPoint<GeoJson2DGeographicCoordinates> point)
+		=> new(point.Coordinates.Longitude, point.Coordinates.Latitude);
 }

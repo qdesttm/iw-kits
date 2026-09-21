@@ -15,12 +15,12 @@ internal static class MultiPolygonMapper
 		foreach (var geoJsonPolygon in geoJsonMultiPolygon.Coordinates.Polygons)
 		{
 			var shellCoords = geoJsonPolygon.Exterior.Positions
-				.Select(CoordinatesMapper.ToCoordinate)
+				.Select(CoordinatesMapper.ToCoordinates)
 				.ToArray();
 
 			var holes = geoJsonPolygon.Holes
 				.Select(h => factory.CreateLinearRing(
-						[.. h.Positions.Select(CoordinatesMapper.ToCoordinate)]))
+						[.. h.Positions.Select(CoordinatesMapper.ToCoordinates)]))
 				.ToArray();
 
 			var shell = factory.CreateLinearRing(shellCoords);
