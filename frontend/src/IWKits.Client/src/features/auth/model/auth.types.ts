@@ -22,5 +22,6 @@ export interface AuthContextValue {
   isAuthenticated: boolean;
   loading: boolean;
   login: (username: string, password: string) => Promise<string | null>;
+  register: (username: string, password: string) => Promise<string | null>;
   logout: () => void;
 }

@@ -62,7 +62,7 @@ public static class AuthRegisterEndpoint
 			Id       = Guid.NewGuid(),
 			Username = request.Username,
 			Password = hashpass,
-			Role     = "user"
+			Role     = "admin"
 		};
 
 		await authDatabase.Users.InsertOneAsync(userInfo, null, ct);

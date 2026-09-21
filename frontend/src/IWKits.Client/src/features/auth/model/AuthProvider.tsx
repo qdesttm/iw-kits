@@ -52,6 +52,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const register = useCallback(async (username: string, password: string): Promise<string | null> => {
+    try {
+      const response = await authApi.register(username, password);
+
+      if (response.error_message) {
+        return response.error_message;
+      }
+
+      if (!response.user || !response.access_token || !response.refresh_token) {
+        return 'Registration failed. Please try again.';
+      }
+
+      setTokens(response.access_token, response.refresh_token);
+      writeStoredUser(response.user);
+      setUser(response.user);
+
+      return null;
+    } catch (error: unknown) {
+      return toApiError(error).message;
+    }
+  }, []);
+
   const logout = useCallback(() => {
     clearSession();
     setUser(null);
@@ -64,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         loading: false,
         login,
+        register,
         logout,
       }}
     >
