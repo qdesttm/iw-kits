@@ -68,8 +68,13 @@
 		},
 		{
 			"folderPath": "Data",
-			"color": "foldercolorizer.color_5faf87",
+			"color": "foldercolorizer.color_afd75f",
 			"badge": "▣"
+		},
+		{
+			"folderPath": "Mongodb",
+			"color": "foldercolorizer.color_5faf87",
+			"badge": "⍽"
 		},
 		{
 			"folderPath": "src",
