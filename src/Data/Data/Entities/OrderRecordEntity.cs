@@ -64,7 +64,7 @@ public sealed class OrderRecordEntity
 	/// Gets or initializes the list of legal tax jurisdictions applied to the order.
 	/// </summary>
 	[BsonElement("jurisdictions")]
-	public required List<OrderTaxJurisdictionComponent> Jurisdictions { get; init; }
+	public required ICollection<OrderTaxJurisdictionComponent> Jurisdictions { get; init; }
 
 	/// <summary>
 	/// Gets or initializes the date and time when the order record was finalized.
