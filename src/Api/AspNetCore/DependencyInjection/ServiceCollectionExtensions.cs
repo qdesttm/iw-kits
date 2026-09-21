@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using IWKits.Api.AspNetCore.Infrastructure.Errors;
 using IWKits.Core.Application.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,7 +36,7 @@ public static class ServiceCollectionExtensions
 		services.AddMediatR(options =>
 			options.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
 
-		services.AddValidatorsFromAssemblyContaining<ServiceExceptionHandler>();
+		services.AddValidatorsFromAssemblyContaining<ServiceExceptionHandler>(includeInternalTypes: true);
 
 		services.AddVersioning();
 		services.AddJwtAuthentication();
