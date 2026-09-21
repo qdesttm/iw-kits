@@ -3,7 +3,7 @@ using System;
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents a user within the application domain.
+/// Represents a user.
 /// </summary>
 /// <param name="Id">The unique identifier of the user.</param>
 /// <param name="Username">The unique username used for authentication.</param>

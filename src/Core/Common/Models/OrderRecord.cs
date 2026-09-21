@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents a finalized order financial and tax record within the application domain.
+/// Represents a finalized order financial and tax record.
 /// </summary>
 /// <param name="Id">The unique identifier for the order record.</param>
 /// <param name="Latitude">The latitude of the order delivery position.</param>

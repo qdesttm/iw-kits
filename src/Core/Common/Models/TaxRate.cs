@@ -1,7 +1,7 @@
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents tax rates associated with a specific postal code within the application domain.
+/// Represents tax rates associated with a specific postal code.
 /// </summary>
 /// <param name="ZipCode">The numerical postal or ZIP code.</param>
 /// <param name="StateId">The state identifier.</param>

@@ -3,7 +3,7 @@ using System;
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents an active user session within the application domain.
+/// Represents an active user session.
 /// </summary>
 /// <param name="Id">The unique identifier of the session.</param>
 /// <param name="UserId">The unique identifier of the user associated with this session.</param>

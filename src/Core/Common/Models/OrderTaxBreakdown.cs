@@ -1,7 +1,7 @@
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents the individual tax rate breakdown of an order within the application domain.
+/// Represents the individual tax rate breakdown of an order.
 /// </summary>
 /// <param name="StateRate">The state-level tax rate component.</param>
 /// <param name="CountyRate">The county-level tax rate component.</param>

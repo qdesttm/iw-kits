@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 namespace IWKits.Core.Common.Models;
 
 /// <summary>
-/// Represents a geographical and postal location within the application domain.
+/// Represents a geographical and postal location.
 /// </summary>
 /// <param name="StateId">The unique state identifier.</param>
 /// <param name="ZipCode">The numerical postal or ZIP code.</param>
