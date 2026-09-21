@@ -7,6 +7,9 @@ namespace IWKits.Core.Application.Options;
 /// </summary>
 public sealed class BackgroundServicesOptions
 {
+	/// <summary>
+	/// The name of the configuration section.
+	/// </summary>
 	public const string SectionName = "backgroundServices";
 
 	/// <summary>
