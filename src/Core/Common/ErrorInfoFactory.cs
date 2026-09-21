@@ -93,4 +93,14 @@ public static class ErrorInfoFactory
 		=> new(
 			ErrorCode.TaxDataUnavailable,
 			$"Tax rate details are currently unavailable for the identified area with zip code '{zipCode}'.");
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance encapsulating an unhandled system exception message.
+	/// </summary>
+	/// <param name="message">The raw technical or system exception message.</param>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateOperationFailed(string message)
+		=> new(
+			ErrorCode.OperationFailed,
+			message);
 }

@@ -49,4 +49,9 @@ public static class ErrorCode
 	/// The error code representing a situation when the required tax rate details are unavailable for the location.
 	/// </summary>
 	public const string TaxDataUnavailable = "tax_data_unavailable";
+
+	/// <summary>
+	/// The error code representing an unexpected system failure or unhandled operation exception.
+	/// </summary>
+	public const string OperationFailed = "operation_failed";
 }
