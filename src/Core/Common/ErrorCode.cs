@@ -59,4 +59,14 @@ public static class ErrorCode
 	/// The error code representing an unexpected system failure or unhandled operation exception.
 	/// </summary>
 	public const string OperationFailed = "operation_failed";
+
+	/// <summary>
+	/// The error code representing a malformed request, validation failure, or bad HTTP input data.
+	/// </summary>
+	public const string BadRequest = "bad_request";
+
+	/// <summary>
+	/// The error code representing an unexpected internal server error where details are hidden for security reasons.
+	/// </summary>
+	public const string InternalServerError = "internal_server_error";
 }

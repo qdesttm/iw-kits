@@ -112,4 +112,19 @@ public static class ErrorInfoFactory
 		=> new(
 			ErrorCode.OperationFailed,
 			message);
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance representing a validation or bad HTTP request failure.
+	/// </summary>
+	/// <param name="message">The descriptive message explaining what is wrong with the request input.</param>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateBadRequest(string message)
+		=> new(ErrorCode.BadRequest, message);
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance representing an unexpected internal server failure.
+	/// </summary>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateInternalServerError()
+		=> new(ErrorCode.InternalServerError, "An unexpected error occurred on the server.");
 }
