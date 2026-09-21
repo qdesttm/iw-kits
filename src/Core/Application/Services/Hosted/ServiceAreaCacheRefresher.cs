@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace IWKits.Core.Application.Services.Hosted;
 
 internal sealed partial class ServiceAreaCacheRefresher(
-	ServiceAreaLocator areaLocator,
+	IServiceAreaLocator areaLocator,
 	IOptions<BackgroundServicesOptions> options,
 	ILogger<ServiceAreaCacheRefresher> logger) :
 	BackgroundService
