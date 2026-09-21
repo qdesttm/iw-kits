@@ -49,27 +49,30 @@
 		{
 			"folderPath": "AspNetCore",
 			"color": "foldercolorizer.color_5f875f",
-			"badge": "⚙"
 		},
 		{
 			"folderPath": "Api",
 			"color": "foldercolorizer.color_5f875f",
-			"badge": "⚙"
 		},
 		{
 			"folderPath": "Client",
 			"color": "foldercolorizer.color_af87af",
-			"badge": "👁"
 		},
 		{
 			"folderPath": "Core",
 			"color": "foldercolorizer.color_87afd7",
-			"badge": "⌬"
+		},
+		{
+			"folderPath": "Application",
+			"color": "foldercolorizer.color_5faf87",
+		},
+		{
+			"folderPath": "Common",
+			"color": "foldercolorizer.color_d7d7ff",
 		},
 		{
 			"folderPath": "Data",
 			"color": "foldercolorizer.color_afd75f",
-			"badge": "▣"
 		},
 		{
 			"folderPath": "Mongodb",
@@ -79,7 +82,6 @@
 		{
 			"folderPath": "src",
 			"color": "foldercolorizer.color_008787",
-			"badge": "⚙"
 		},
 		{
 			"folderPath": "mongodb",
