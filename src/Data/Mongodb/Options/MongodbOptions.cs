@@ -8,7 +8,7 @@ public sealed class MongodbOptions
 	/// <summary>
 	/// The name of the configuration section.
 	/// </summary>
-	public const string SectionName = "mongodb";
+	public const string SectionName = "mongodbOptions";
 
 	/// <summary>
 	/// Gets or initializes the full MongoDB server connection string.
