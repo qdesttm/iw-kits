@@ -8,4 +8,6 @@ namespace IWKits.Core.Application.Mappers;
 internal static partial class OrderRecordMapper
 {
 	public static partial OrderRecordEntity ToOrderRecordEntity(this OrderRecord orderRecord);
+
+	public static partial OrderRecord ToOrderRecord(this OrderRecordEntity entity);
 }
