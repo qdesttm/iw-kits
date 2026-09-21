@@ -29,6 +29,7 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddMemoryCache();
 		services.AddSwaggerGen();
+		services.AddAntiforgery();
 
 		services.AddExceptionHandler<ServiceExceptionHandler>();
 		services.AddProblemDetails();
