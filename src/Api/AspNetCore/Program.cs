@@ -1,41 +1,26 @@
-var builder = WebApplication.CreateBuilder(args);
+using IWKits.Core.Application.DependencyInjection;
+using IWKits.Core.Application.Options;
+using IWKits.Core.Data.DependencyInjection;
+using IWKits.Core.Mongodb.Options;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+var services = builder.Services;
+
+services.Configure<BackgroundServicesOptions>(configuration.GetSection(BackgroundServicesOptions.SectionName));
+services.Configure<SecurityTokensOptions>(configuration.GetSection(SecurityTokensOptions.SectionName));
+services.Configure<MongodbOptions>(configuration.GetSection(MongodbOptions.SectionName));
+services.Configure<CacheOptions>(configuration.GetSection(CacheOptions.SectionName));
+
+services.AddMediatR(options =>
+	options.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+services.AddDbContext();
+services.AddApplication();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+await app.RunAsync();
