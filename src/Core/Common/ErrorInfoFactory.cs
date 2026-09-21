@@ -35,4 +35,15 @@ public static class ErrorInfoFactory
 		=> new(
 			ErrorCode.UserNotFound,
 			$"The user with ID '{userId}' was not found.");
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that there is a mismatch between the tax rate and postal code.
+	/// </summary>
+	/// <param name="rateZip">The numerical postal code from the tax rate data.</param>
+	/// <param name="locationZip">The numerical postal code from the geographical location data.</param>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreatePostalCodeMismatch(int rateZip, int locationZip)
+		=> new(
+			ErrorCode.PostalCodeMismatch,
+			$"Postal codes do not match: TaxRate has '{rateZip}' while Location has '{locationZip}'.");
 }

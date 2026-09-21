@@ -19,4 +19,9 @@ public static class ErrorCode
 	/// The error code representing a situation when the requested user is not found.
 	/// </summary>
 	public const string UserNotFound = "user_not_found";
+
+	/// <summary>
+	/// The error code representing a situation when the ZIP codes of the provided tax rate and location do not match.
+	/// </summary>
+	public const string PostalCodeMismatch = "postal_code_mismatch";
 }
