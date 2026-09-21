@@ -24,4 +24,19 @@ public static class ErrorCode
 	/// The error code representing a situation when the ZIP codes of the provided tax rate and location do not match.
 	/// </summary>
 	public const string PostalCodeMismatch = "postal_code_mismatch";
+
+	/// <summary>
+	/// The error code representing a situation when the requested order delivery location is outside any supported service area.
+	/// </summary>
+	public const string OutsideServiceArea = "outside_service_area";
+
+	/// <summary>
+	/// The error code representing a situation when the specific geographic jurisdiction or city data cannot be resolved for the location.
+	/// </summary>
+	public const string JurisdictionNotResolved = "jurisdiction_not_resolved";
+
+	/// <summary>
+	/// The error code representing a situation when the required tax rate details are unavailable for the location.
+	/// </summary>
+	public const string TaxDataUnavailable = "tax_data_unavailable";
 }

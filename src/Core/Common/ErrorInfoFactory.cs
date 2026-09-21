@@ -46,4 +46,33 @@ public static class ErrorInfoFactory
 		=> new(
 			ErrorCode.PostalCodeMismatch,
 			$"Postal codes do not match: TaxRate has '{rateZip}' while Location has '{locationZip}'.");
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the requested delivery location is outside any supported service area.
+	/// </summary>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateOutsideServiceArea()
+		=> new(
+			ErrorCode.OutsideServiceArea,
+			"The selected delivery location is outside the supported service areas.");
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the specific geographic jurisdiction cannot be resolved for a state.
+	/// </summary>
+	/// <param name="stateId">The identifier of the state.</param>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateJurisdictionNotResolved(string stateId)
+		=> new(
+			ErrorCode.JurisdictionNotResolved,
+			$"Unable to calculate or resolve specific jurisdiction metadata for the selected location in state '{stateId}'.");
+
+	/// <summary>
+	/// Creates a new <see cref="ErrorInfo"/> instance which indicates that the required tax rate details are unavailable.
+	/// </summary>
+	/// <param name="zipCode">The numerical postal or ZIP code.</param>
+	/// <returns>A new <see cref="ErrorInfo"/> instance.</returns>
+	public static ErrorInfo CreateTaxDataUnavailable(int zipCode)
+		=> new(
+			ErrorCode.TaxDataUnavailable,
+			$"Tax rate details are currently unavailable for the identified area with zip code '{zipCode}'.");
 }
