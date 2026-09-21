@@ -1,15 +1,12 @@
 {
-	"iwkits.apiPath" : "${workspaceFolder}/backend/src/IWKits.Api",
-
-	"iwkits.mongoDbPath" : "${workspaceFolder}/mongodb",
-	"iwkits.mongoDbPort" : "27017",
-
+	"iWKits.aspNetCore" : "${workspaceFolder}/src/Api/AspNetCore",
+	"iWKits.mongoDbPath" : "${workspaceFolder}/mongodb",
+	"iWKits.mongoDbPort" : "27017",
 	"files.exclude": {
 		"desktop.ini" : true,
 		"**/bin": true,
 		"**/obj": true,
 	},
-
 	"folder-color.pathColors": [
 		{
 			"folderPath": ".git",
