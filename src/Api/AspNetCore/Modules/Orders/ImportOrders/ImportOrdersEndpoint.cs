@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace IWKits.Api.AspNetCore.Modules.Orders.ImportOrders;
 
@@ -22,6 +21,7 @@ internal sealed class ImportOrdersEndpoint : IEndpoint
 		return app.MapPost("/v{version:apiVersion}/orders/import", Handle)
 			.RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
 			.WithApiVersionSet(ApiVersionSetFactory.GetOrCreate(app))
+			.DisableAntiforgery()
 			.MapToApiVersion(1)
 			.WithTags("Orders")
 			.WithSummary("Bulk import orders from CSV")

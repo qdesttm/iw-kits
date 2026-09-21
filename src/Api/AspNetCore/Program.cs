@@ -31,8 +31,6 @@ app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseAntiforgery();
-
 app.MapEndpoints();
 
 await app.RunAsync();
