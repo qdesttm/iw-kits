@@ -16,4 +16,4 @@ public sealed record TaxCalculationContext(
 	decimal TaxAmount,
 	decimal TotalAmount,
 	OrderTaxBreakdown Breakdown,
-	IEnumerable<OrderTaxJurisdiction> Jurisdictions);
+	IReadOnlyList<OrderTaxJurisdiction> Jurisdictions);

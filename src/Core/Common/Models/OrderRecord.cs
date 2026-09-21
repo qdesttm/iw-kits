@@ -25,5 +25,5 @@ public sealed record OrderRecord(
 	decimal TaxAmount,
 	decimal TotalAmount,
 	OrderTaxBreakdown Breakdown,
-	List<OrderTaxJurisdiction> Jurisdictions,
+	IReadOnlyList<OrderTaxJurisdiction> Jurisdictions,
 	DateTime Timestamp);
