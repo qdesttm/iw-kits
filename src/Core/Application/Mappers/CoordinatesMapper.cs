@@ -12,5 +12,5 @@ internal static partial class CoordinatesMapper
 		=> new(coordinates.Longitude, coordinates.Latitude);
 
 	public static Coordinate ToCoordinates(this GeoJsonPoint<GeoJson2DGeographicCoordinates> point)
-		=> new(point.Coordinates.Longitude, point.Coordinates.Latitude);
+		=> point.Coordinates.ToCoordinates();
 }
