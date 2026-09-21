@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace IWKits.Api.AspNetCore.Infrastructure;
+namespace IWKits.Api.AspNetCore.Infrastructure.Errors;
 
 internal sealed partial class ServiceExceptionHandler(
 	ILogger<ServiceExceptionHandler> logger) :

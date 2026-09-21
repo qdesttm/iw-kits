@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace IWKits.Api.AspNetCore.Infrastructure;
+namespace IWKits.Api.AspNetCore.Infrastructure.Errors;
 
 internal sealed partial class ServiceExceptionHandler
 {

@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using IWKits.Api.AspNetCore.Hosting;
+using IWKits.Api.AspNetCore.Infrastructure;
 using IWKits.Api.AspNetCore.Versioning;
 using IWKits.Core.Application.Modules.Orders.Models;
 using IWKits.Core.Application.Modules.Orders.Models.Requests;

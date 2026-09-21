@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 
-namespace IWKits.Api.AspNetCore.Hosting;
+namespace IWKits.Api.AspNetCore.Infrastructure;
 
-internal static class WebApplicationExtensions
+internal static class EndpointExtensions
 {
-	public static WebApplication MapEndpoints(this WebApplication app)
+	public static void MapEndpoints(this WebApplication app)
 	{
 		var assembly = Assembly.GetCallingAssembly();
 
@@ -21,7 +21,5 @@ internal static class WebApplicationExtensions
 			var endpoint = (IEndpoint) Activator.CreateInstance(type)!;
 			endpoint.Map(app);
 		}
-
-		return app;
 	}
 }

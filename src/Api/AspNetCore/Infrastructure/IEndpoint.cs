@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace IWKits.Api.AspNetCore.Hosting;
+namespace IWKits.Api.AspNetCore.Infrastructure;
 
 internal interface IEndpoint
 {

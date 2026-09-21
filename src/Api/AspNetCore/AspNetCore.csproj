@@ -37,4 +37,10 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Update="Infrastructure\Errors\ServiceExceptionHandler.Logging.cs">
+			<DependentUpon>ServiceExceptionHandler.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
 </Project>

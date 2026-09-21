@@ -2,7 +2,7 @@ using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using IWKits.Api.AspNetCore.Hosting;
+using IWKits.Api.AspNetCore.Infrastructure;
 using IWKits.Api.AspNetCore.Versioning;
 using IWKits.Core.Application.Modules.Users.Models;
 using IWKits.Core.Application.Modules.Users.Models.Requests;
