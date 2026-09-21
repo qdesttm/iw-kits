@@ -1,4 +1,6 @@
-namespace IWKits.Core.Common.Models;
+using IWKits.Core.Common.Models;
+
+namespace IWKits.Core.Application.Models;
 
 /// <summary>
 /// Represents the result of a successful user session initialization or refresh, containing token details.

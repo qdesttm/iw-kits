@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using IWKits.Core.Common.Models;
 
-namespace IWKits.Core.Common.Models;
+namespace IWKits.Core.Application.Models;
 
 /// <summary>
 /// Represents the comprehensive result of a tax calculation process.
@@ -15,4 +16,4 @@ public sealed record TaxCalculationContext(
 	decimal TaxAmount,
 	decimal TotalAmount,
 	OrderTaxBreakdown Breakdown,
-	List<OrderTaxJurisdiction> Jurisdictions);
+	IEnumerable<OrderTaxJurisdiction> Jurisdictions);

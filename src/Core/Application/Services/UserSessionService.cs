@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using IWKits.Core.Application.Mappers;
+using IWKits.Core.Application.Models;
 using IWKits.Core.Application.Options;
 using IWKits.Core.Common.Exceptions;
 using IWKits.Core.Common.Models;

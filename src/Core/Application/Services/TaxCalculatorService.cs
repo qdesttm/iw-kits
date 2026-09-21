@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using IWKits.Core.Application.Extensions;
 using IWKits.Core.Application.Mappers;
+using IWKits.Core.Application.Models;
 using IWKits.Core.Common.Exceptions;
 using IWKits.Core.Common.Models;
 
