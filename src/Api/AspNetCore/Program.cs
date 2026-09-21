@@ -1,3 +1,4 @@
+using IWKits.Api.AspNetCore.Hosting;
 using IWKits.Core.Application.DependencyInjection;
 using IWKits.Core.Application.Options;
 using IWKits.Core.Data.DependencyInjection;
@@ -22,5 +23,7 @@ services.AddDbContext();
 services.AddApplication();
 
 var app = builder.Build();
+
+app.MapEndpoints();
 
 await app.RunAsync();
