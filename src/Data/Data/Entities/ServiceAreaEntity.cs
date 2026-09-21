@@ -25,5 +25,5 @@ public sealed class ServiceAreaEntity
 	/// Gets or initializes the GeoJSON MultiPolygon representing the geographical boundaries of the service area.
 	/// </summary>
 	[BsonElement("boundary")]
-	public required GeoJsonMultiPolygon<GeoJson2DCoordinates> Boundary { get; init; }
+	public required GeoJsonMultiPolygon<GeoJson2DGeographicCoordinates> Boundary { get; init; }
 }
