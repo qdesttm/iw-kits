@@ -134,6 +134,11 @@
 			"extension": "zip",
 			"color": "foldercolorizer.color_5fafaf",
 			"badge": "·"
+		},
+		{
+			"extension": "md",
+			"color": "foldercolorizer.color_87875f",
+			"badge": "༶"
 		}
 	]
 }
