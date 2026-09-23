@@ -1,3 +1,5 @@
 *
 
 !./builds
+
+!./src/Client/nginx.conf
