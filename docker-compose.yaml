@@ -1,4 +1,15 @@
 services:
+  iwkits-client:
+    container_name: iwkits-client
+    hostname: iwkits-client
+    image: iwkits-client:latest
+    networks:
+      - iwkits-network
+    depends_on:
+      - iwkits-api
+    ports:
+      - "3000:80"
+
   iwkits-api:
     container_name: iwkits-api
     hostname: iwkits-api
