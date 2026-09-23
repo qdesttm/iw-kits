@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Space, Card, DatePicker, InputNumber, Row, Col } from 'antd';
 import { ClearOutlined } from '@ant-design/icons';
 import type { OrdersFiltersState } from '../../hooks/useOrders.js';

@@ -29,16 +29,44 @@
 			"problemMatcher": "$msCompile"
 		},
 		{
+			"label": "Publish.Client",
+			"type": "shell",
+			"command": "npx",
+			"args": [
+				"vite",
+				"build",
+				"--outDir",
+				"${workspaceFolder}/builds/Client"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/src/Client"
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "Docker.Build.AspNetCore",
 			"type": "shell",
 			"command": "docker",
 			"args": [
 				"build",
-				"-t", "iwkits-api:latest",
+				"-t", "dev.kitstech.local/iw-kits/api:latest",
 				"-f", "${config:iWKits.aspNetCore}/Dockerfile",
 				"${workspaceFolder}"
 			],
 			"dependsOn": "Publish.AspNetCore"
+		},
+		{
+			"label": "Docker.Build.Client",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"build",
+				"-t", "dev.kitstech.local/iw-kits/client:latest",
+				"-f", "${workspaceFolder}/src/Client/Dockerfile",
+				"${workspaceFolder}"
+			],
+			"dependsOn": "Publish.Client",
+			"problemMatcher": []
 		},
 		{
 			"label": "Start.MongoDb.Auth",
