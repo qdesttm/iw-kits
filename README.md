@@ -1,4 +1,3 @@
-
 # Instant Wellness Kits
 
 **Order Management System with Geolocation-Based Tax Calculation.**
@@ -7,19 +6,17 @@
 
 A brief description of the challenges our team faced during the development of this solution.
 
-|**Challenge**|**Solution**|
-|---|---|
-|**Restrictions on Third-Party APIs**|Midway through development, we decided to phase out external services due to API usage restrictions. We transitioned to working with local, pre-processed datasets, ensuring total system autonomy.|
-|**Handling Out-of-State Points**|To verify coordinates, we implemented a **GeoJSON MultiPolygon** covering all land and water boundaries of New York, allowing for precise regional identification.|
-|**Tax Calculation for Remote Areas (Forests, Rivers, etc.)**|We implemented an algorithm that anchors the tax rate to the nearest available Zip Code. This ensures seamless financial calculations for any point in New York, regardless of existing postal infrastructure.|
-|**Slow Import of Large Datasets**|The loading process was optimized by implementing caching mechanisms and parallel database writes, significantly reducing CSV file processing time.|
-|**Zip Code Ambiguity (One code spanning two states)**|To avoid tax rate errors, the system uses combined identification. Calculations are based not only on the Zip Code but also on a State Identifier, accurately separating jurisdictions with different tax levels even within the same index.|
+| **Challenge**                                                | **Solution**                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Restrictions on Third-Party APIs**                         | Midway through development, we decided to phase out external services due to API usage restrictions. We transitioned to working with local, pre-processed datasets, ensuring total system autonomy.                                          |
+| **Handling Out-of-State Points**                             | To verify coordinates, we implemented a **GeoJSON MultiPolygon** covering all land and water boundaries of New York, allowing for precise regional identification.                                                                           |
+| **Tax Calculation for Remote Areas (Forests, Rivers, etc.)** | We implemented an algorithm that anchors the tax rate to the nearest available Zip Code. This ensures seamless financial calculations for any point in New York, regardless of existing postal infrastructure.                               |
+| **Slow Import of Large Datasets**                            | The loading process was optimized by implementing caching mechanisms and parallel database writes, significantly reducing CSV file processing time.                                                                                          |
+| **Zip Code Ambiguity (One code spanning two states)**        | To avoid tax rate errors, the system uses combined identification. Calculations are based not only on the Zip Code but also on a State Identifier, accurately separating jurisdictions with different tax levels even within the same index. |
 
 > **Note:** Since physical delivery to certain zones (e.g., dense forests or the middle of a river) may be logistically complex, actual transportation to such locations is a separate case requiring additional research at the courier service level. Our primary goal was to ensure the stability of mathematical calculations for any geographic position.
-> 
+
 > **Important:** The solution architecture allows for polygon editing. This enables the automatic exclusion of forests, parks, or water bodies during the validation stage where delivery is known to be impossible.
-
-
 
 ## Flexibility & Scalability
 
@@ -32,136 +29,79 @@ The application architecture is designed with future expansion in mind. The syst
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript + Vite + Ant Design
-- **Backend:** C# .NET 10 Minimal API
-- **Database:** MongoDB
-- **Containerization:** Docker + Docker Compose
+- **Frontend:** React, TypeScript, Vite, Ant Design
+- **Backend:** C# .NET 10 Minimal API, MediatR (CQS)
+- **Database:** MongoDB (Production-isolated access & indexes)
+- **DevOps:** Docker, Docker Compose, automated VS Code tasks
 
 ## Frontend Features
 
-- **Order Table:** Featuring server-side pagination and sorting.
-- **Filters:** Filter by date range and total amount range.
-- **Order Creation:** Manual creation of orders using specific coordinates.
-- **CSV Import:** Bulk upload of orders from a CSV file.
+- **Orders Table:** Server-side pagination and multidirectional sorting.
+- **Filters:** Date range and financial amount boundary filters.
+- **Creation:** Geolocation-based order entry with real-time tax validation.
+- **CSV Import:** Stream-based bulk upload for large order datasets.
 
 ## How to Run
 
 **Prerequisites:**
-
-- Docker installed and running
+- VS Code (Recommended editor environment)
+- Docker Desktop installed and running
 - Git
 
 **Step-by-step Setup:**
 
 1. **Clone the Repository**
- 
-    ```
-    git clone https://github.com/QDestTM/iw-kits.git
-    cd iw-kits
-    ```
- 
-1. **Prepare Database Data**
-    
+
+```bash
+git clone https://github.com
+cd iw-kits
+```
+
+2. **Prepare Database Data**
+
 Download the archive (`.zip` or `.rar`) from the **Releases** tab and extract the `mongodb` folder into the project root. It contains the necessary data and configurations for the backend calculations.
-    
-2. **Build Docker Images**
-    
-    - **API Image:**
-        
-        `docker build -t iw-kits/api -f backend/src/IWKits.Api/Dockerfile .`
-        
-    - **Frontend Image:**
-        
-        `docker build -t iw-kits/web -f frontend/src/IWKits.Client/Dockerfile .`
-        
-3. **Launch Services**
- 
-    ```
-    docker compose up -d
-    ```
- 
+
+3. **Build Images via VS Code Tasks**
+
+Open the root folder in VS Code, press `Ctrl+Shift+P` (`Cmd+Shift+P` on Mac), select **Tasks: Run Task**, and run:
+- `Docker.Build.AspNetCore` – Compiles the .NET 10 API and builds `dev.kitstech.local/iwkits/api`.
+- `Docker.Build.Client` – Builds production frontend assets and builds `dev.kitstech.local/iwkits/client`.
+
+4. **Launch Infrastructure**
+
+Create a `.env` file in the root directory (either copy and edit `.env.example` or download a pre-configured `.env` file from the **Releases** tab), then run:
+
+```bash
+docker compose up -d
+```
 
 ## Authorization Data
 
-Use the following credentials to access the management panel or the database:
-
-|**Role**|**Login**|**Password**|**Access Method**|
-|---|---|---|---|
-|**Admin**|`iwkits-admin`|`secretpass`|Web App (Frontend)|
-|**Admin**|`admin`|`iwkits000adm000pass`|MongoDB Compass|
-|**API Service**|`api_service`|`iwkits000api000pass`|MongoDB Compass|
+| **Role / Service** | **Login** | **Password** | **Access Method** |
+| :--- | :--- | :--- | :--- |
+| **Web Admin** | `admin` | `admin` | Web App (Frontend) |
+| **DB Root Admin** | `admin` | `admin` | MongoDB Compass |
+| **DB API Service** | `api_service` | `8888` | MongoDB Compass |
 
 ### Services
 
-|**Service**|**URL**|**Description**|
-|---|---|---|
-|**Frontend**|`http://localhost:25000`|React SPA (Nginx)|
-|**Backend API**|`http://localhost:23000`|.NET Minimal API|
-|**MongoDB**|`http://localhost:24000`|Database|
-|**Swagger**|`http://localhost:23000/swagger`|API Documentation|
+| **Service** | **URL** | **Description** |
+| :--- | :--- | :--- |
+| **Frontend** | `http://localhost:3000` | React SPA (Nginx) |
+| **Backend API** | `http://localhost:5152` | .NET 10 Minimal API |
+| **MongoDB** | `http://localhost:27017` | Isolated Database Instance |
+| **Swagger UI** | `http://localhost:5152/swagger` | Interactive API Documentation |
 
-## API Overview
+### Bulk CSV Import Format
 
-### User Registration
+The CSV file for bulk import (`POST /v1/orders/import`) must use this layout:
 
-`POST /api/v1/auth/register`
-
-```json
-{
-  "username": "your_username",
-  "password": "your_password"
-}
-```
-
-### User Login
-
-`POST /api/v1/auth/login`
-
-
-```json
-{
-  "username": "your_username",
-  "password": "your_password"
-}
-```
-
-### Create Order
-
-`POST /api/v1/orders`
-
-
-```json
-{
-  "latitude": 40.7580,
-  "longitude": -73.9855,
-  "subtotal": 99.99
-}
-```
-
-### Get Orders (Filtering, Sorting, Pagination)
-
-`GET /api/v1/orders?page=1&page_size=24&sort_by=timestamp&descending=true`
-
-| **Parameter**      | **Type** | **Description**                                              |
-| ------------------ | -------- | ------------------------------------------------------------ |
-| `page`             | int      | Page number (Default: 1)                                     |
-| `page_size`        | int      | Items per page (Default: 24, Max: 128)                       |
-| `sort_by`          | string   | Field: `timestamp`, `subtotal`, `total_amount`, `tax_amount` |
-| `descending`       | bool     | Sorting direction, `true` for descending                     |
-| `from_date`        | ISO date | Filter: orders after this date                               |
-| `to_date`          | ISO date | Filter: orders before this date                              |
-| `min_total_amount` | decimal  | Filter: minimum total amount                                 |
-| `max_total_amount` | decimal  | Filter: maximum total amount                                 |
-
-### Import Orders (CSV)
-
-`POST /api/v1/orders/import`
-
-**Content-Type:** `multipart/form-data`
-
-**CSV Format:**
-
-```
+```csv
 id,latitude,longitude,subtotal,timestamp
 1001,40.7580,-73.9855,99.99,2026-01-15T10:30:00Z
+1002,40.7128,-74.0060,149.50,2026-01-15T11:15:00Z
 ```
+
+> **Note:** The `id` column is **optional and completely ignored** by the server. The database will always generate its own unique identifiers for all imported rows.
+
+> **Note:** All API endpoints, request/response models, and schemas are fully documented and testable in **Swagger UI**: `http://localhost:5152/swagger`.
