@@ -101,6 +101,16 @@
 			"badge": "×"
 		},
 		{
+			"folderPath": ".env",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
+			"folderPath": ".env.example",
+			"color": "foldercolorizer.color_d7af87",
+			"badge": "⌔"
+		},
+		{
 			"extension": "slnx",
 			"color": "foldercolorizer.color_875faf",
 			"badge": "⥼"
