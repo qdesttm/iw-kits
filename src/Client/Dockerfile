@@ -1,4 +1,4 @@
-ARG SRC_PATH=src/Client
+ARG SRC_PATH=frontend/src/IWKits.Client
 
 # STAGE 1 - Builder
 FROM node:22-alpine AS build
