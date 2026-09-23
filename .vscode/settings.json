@@ -78,7 +78,7 @@
 		},
 		{
 			"folderPath": "src",
-			"color": "foldercolorizer.color_008787"
+			"color": "foldercolorizer.color_00afaf"
 		},
 		{
 			"folderPath": "builds",
@@ -89,6 +89,11 @@
 			"folderPath": "mongodb",
 			"color": "foldercolorizer.color_5faf87",
 			"badge": "⊢"
+		},
+		{
+			"folderPath": "docker-compose.yaml",
+			"color": "foldercolorizer.color_0087af",
+			"badge": "≈"
 		},
 		{
 			"folderPath": ".dockerignore",
@@ -111,9 +116,14 @@
 			"badge": "·"
 		},
 		{
-			"folderPath": "docker-compose.yaml",
-			"color": "foldercolorizer.color_0087af",
-			"badge": "≈"
+			"extension": "rar",
+			"color": "foldercolorizer.color_5fafaf",
+			"badge": "·"
+		},
+		{
+			"extension": "zip",
+			"color": "foldercolorizer.color_5fafaf",
+			"badge": "·"
 		}
 	]
 }
