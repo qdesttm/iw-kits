@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, Form, InputNumber, message } from 'antd';
 import { ordersApi } from '../../api/orders.api.js';
 

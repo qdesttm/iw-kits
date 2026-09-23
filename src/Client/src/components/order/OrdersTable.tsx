@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table, Space, Tag, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table/index.js';
