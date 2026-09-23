@@ -1,16 +1,15 @@
-# Logs ignores
+# Folders
+.obsidian/**
+mongodb/**
+
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Obsidian ignores
-.obsidian/**
-
-# MongoDB ignores
-mongodb/**
-
-# Api ignores
+# Backend
+appsettings.Development.json
 **/bin/
 **/obj/
 **/TestResults/
@@ -19,7 +18,7 @@ mongodb/**
 **/*.cache
 **/*.pdb
 
-# Frontend ignores
+# Frontend
 node_modules
 dist
 dist-ssr
@@ -27,16 +26,16 @@ dist-ssr
 .eslintcache
 .vite
 
-# Docker ignores
-**/docker-compose.override.yml
-
-# Coverage ignores
+# Coverage
 coverage/
 *.coverage
 *.coveragexml
 
-# Publish output
-publish/
+# Environment
+.env
+
+# Builds
+builds/
 
 # Samples
 sample-input.csv

@@ -1,0 +1,17 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "AspNetCore",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "Build.AspNetCore",
+			"program": "${config:iWKits.aspNetCore}/bin/Debug/net10.0/IWKits.Api.AspNetCore.dll",
+			"cwd": "${config:iWKits.aspNetCore}",
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"stopAtEntry": false,
+			"launchSettingsProfile": "AspNetCore"
+		}
+	]
+}

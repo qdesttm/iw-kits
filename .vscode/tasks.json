@@ -1,0 +1,68 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build.AspNetCore",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${config:iWKits.aspNetCore}/AspNetCore.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Publish.AspNetCore",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"${config:iWKits.aspNetCore}/AspNetCore.csproj",
+				"-c", "Release",
+				"-o", "${workspaceFolder}/builds/AspNetCore",
+				"/consoleloggerparameters:NoSummary",
+				"--no-build"
+			],
+			"dependsOn": "Build.AspNetCore",
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Docker.Build.AspNetCore",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"build",
+				"-t", "iwkits-api:latest",
+				"-f", "${config:iWKits.aspNetCore}/Dockerfile",
+				"${workspaceFolder}"
+			],
+			"dependsOn": "Publish.AspNetCore"
+		},
+		{
+			"label": "Start.MongoDb.Auth",
+			"type" : "process",
+			"isBackground": true,
+			"command" : "mongod",
+			"args" : [
+				"--dbpath", "${config:iWKits.mongoDbPath}",
+				"--port", "${config:iWKits.mongoDbPort}",
+				"--auth",
+				"--quiet"
+			],
+		},
+		{
+			"label": "Start.MongoDb.NoAuth",
+			"type" : "process",
+			"isBackground": true,
+			"command" : "mongod",
+			"args" : [
+				"--dbpath", "${config:iWKits.mongoDbPath}",
+				"--port", "${config:iWKits.mongoDbPort}",
+				"--noauth",
+				"--quiet"
+			],
+		},
+	]
+}
