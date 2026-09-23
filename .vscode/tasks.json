@@ -63,7 +63,7 @@
 				"build",
 				"-t", "iwkits-client:latest",
 				"-f", "${workspaceFolder}/src/Client/Dockerfile",
-				"${workspaceFolder}/src/Client"
+				"${workspaceFolder}"
 			],
 			"dependsOn": "Publish.Client",
 			"problemMatcher": []
