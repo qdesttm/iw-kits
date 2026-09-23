@@ -2,7 +2,7 @@ services:
   iwkits-client:
     container_name: iwkits-client
     hostname: iwkits-client
-    image: iwkits-client:latest
+    image: dev.kitstech.local/iw-kits/client:latest
     networks:
       - iwkits-network
     depends_on:
@@ -13,7 +13,7 @@ services:
   iwkits-api:
     container_name: iwkits-api
     hostname: iwkits-api
-    image: iwkits-api:latest
+    image: dev.kitstech.local/iw-kits/api:latest
     env_file:
       - .env
     environment:

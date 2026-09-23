@@ -49,7 +49,7 @@
 			"command": "docker",
 			"args": [
 				"build",
-				"-t", "iwkits-api:latest",
+				"-t", "dev.kitstech.local/iw-kits/api:latest",
 				"-f", "${config:iWKits.aspNetCore}/Dockerfile",
 				"${workspaceFolder}"
 			],
@@ -61,7 +61,7 @@
 			"command": "docker",
 			"args": [
 				"build",
-				"-t", "iwkits-client:latest",
+				"-t", "dev.kitstech.local/iw-kits/client:latest",
 				"-f", "${workspaceFolder}/src/Client/Dockerfile",
 				"${workspaceFolder}"
 			],
