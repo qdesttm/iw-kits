@@ -7,7 +7,7 @@
 			"command": "dotnet",
 			"args": [
 				"build",
-				"${config:iWKits.aspNetCore}/AspNetCore.csproj",
+				"${config:iWKits.aspNetCore}\\AspNetCore.csproj",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
@@ -19,7 +19,7 @@
 			"command": "dotnet",
 			"args": [
 				"publish",
-				"${config:iWKits.aspNetCore}/AspNetCore.csproj",
+				"${config:iWKits.aspNetCore}\\AspNetCore.csproj",
 				"-c", "Release",
 				"-o", "${workspaceFolder}/builds/AspNetCore",
 				"/consoleloggerparameters:NoSummary",
@@ -29,16 +29,44 @@
 			"problemMatcher": "$msCompile"
 		},
 		{
+			"label": "Publish.Client",
+			"type": "shell",
+			"command": "npx",
+			"args": [
+				"vite",
+				"build",
+				"--outDir",
+				"${workspaceFolder}\\builds\\Client"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}\\src\\Client"
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "Docker.Build.AspNetCore",
 			"type": "shell",
 			"command": "docker",
 			"args": [
 				"build",
 				"-t", "iwkits-api:latest",
-				"-f", "${config:iWKits.aspNetCore}/Dockerfile",
+				"-f", "${config:iWKits.aspNetCore}\\Dockerfile",
 				"${workspaceFolder}"
 			],
 			"dependsOn": "Publish.AspNetCore"
+		},
+		{
+			"label": "Docker.Build.Client",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"build",
+				"-t", "iwkits-client:latest",
+				"-f", "${workspaceFolder}\\src\\Client\\Dockerfile",
+				"${workspaceFolder}\\src\\Client"
+			],
+			"dependsOn": "Publish.Client",
+			"problemMatcher": []
 		},
 		{
 			"label": "Start.MongoDb.Auth",
