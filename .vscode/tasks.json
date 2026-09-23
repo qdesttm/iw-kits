@@ -34,7 +34,7 @@
 			"command": "docker",
 			"args": [
 				"build",
-				"-t", "iwkits/api:latest",
+				"-t", "iwkits-api:latest",
 				"-f", "${config:iWKits.aspNetCore}/Dockerfile",
 				"${workspaceFolder}"
 			],

@@ -1,56 +1,45 @@
 services:
-  iw-kits-web:
-    container_name: iw-kits-web
-    hostname: iw-kits-web
-
-    image: docker.io/iw-kits/web:latest
-
-    networks:
-      - iw-kits-network
-    depends_on:
-      - iw-kits-api
-    ports:
-      - "25000:80"
-
-  iw-kits-api:
-    container_name: iw-kits-api
-    hostname: iw-kits-api
-
-    image: docker.io/iw-kits/api:latest
-
+  iwkits-api:
+    container_name: iwkits-api
+    hostname: iwkits-api
+    image: iwkits-api:latest
     env_file:
-      - .env.dev
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Logging__LogLevel__Default=Information
+      - Logging__LogLevel__Microsoft=Warning
+      - securityTokens__jwtKey=${SECURITY_TOKENS_JWT_KEY}
+      - mongodbOptions__connectionString=${MONGODB_OPTIONS_CONNECTION_STRING}
+      - mongodbOptions__databaseName=${MONGODB_OPTIONS_DATABASE_NAME}
     networks:
-      - iw-kits-network
+      - iwkits-network
     depends_on:
-      - iw-kits-mdb
+      - iwkits-db
     ports:
-      - "23000:8080"
+      - "5152:8080"
 
-  iw-kits-mdb:
-    container_name: iw-kits-mdb
-    hostname: iw-kits-mdb
-
-    command: mongod --auth
+  iwkits-db:
+    container_name: iwkits-db
+    hostname: iwkits-db
     image: mongo:latest
-
+    command: mongod --auth
     networks:
-      - iw-kits-network
+      - iwkits-network
     ports:
-      - "24000:27017"
+      - "27017:27017"
     volumes:
-      - "iw-kits-volume:/data/db"
+      - "iwkits-data:/data/db"
 
 networks:
-  iw-kits-network:
-    name: iw-kits-network
+  iwkits-network:
+    name: iwkits-network
     driver: bridge
 
 volumes:
-  iw-kits-volume:
-    name: iw-kits-volume
+  iwkits-data:
+    name: iwkits-data
     driver: local
-
     driver_opts:
       type: none
       device: ./mongodb
