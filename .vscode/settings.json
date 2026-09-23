@@ -81,6 +81,11 @@
 			"color": "foldercolorizer.color_008787"
 		},
 		{
+			"folderPath": "builds",
+			"color": "foldercolorizer.color_afaf87",
+			"badge": "⍽"
+		},
+		{
 			"folderPath": "mongodb",
 			"color": "foldercolorizer.color_5faf87",
 			"badge": "⊢"

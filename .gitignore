@@ -36,8 +36,8 @@ coverage/
 *.coverage
 *.coveragexml
 
-# Publish output
-publish/
+# Builds output
+builds/
 
 # Samples
 sample-input.csv

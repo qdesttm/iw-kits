@@ -11,9 +11,7 @@
 			"console": "internalConsole",
 			"internalConsoleOptions": "openOnSessionStart",
 			"stopAtEntry": false,
-			"env": {
-				"ASPNETCORE_ENVIRONMENT": "Development"
-			}
+			"launchSettingsProfile": "AspNetCore"
 		}
 	]
 }
