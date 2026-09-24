@@ -49,7 +49,7 @@ export default function OrdersPage() {
         <OrdersTable
           orders={data?.items ?? []}
           loading={isFetching}
-          total={data?.total_count ?? 0}
+          total={data?.itemsCount ?? 0}
           currentPage={table.page}
           pageSize={table.pageSize}
           onTableChange={table.setPagination}

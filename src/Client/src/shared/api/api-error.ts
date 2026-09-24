@@ -1,22 +1,27 @@
 import axios, { type AxiosError } from 'axios';
-import { readBody, statusFallback } from './normalize.js';
+import { ErrorCode, readBody, readErrorInfo, statusFallback } from './normalize';
 
 export class ApiError extends Error {
   readonly status: number | null;
+  readonly code: string | null;
   readonly details: string[];
 
-  constructor(message: string, status: number | null = null, details: string[] = []) {
+  constructor(
+    message: string,
+    status: number | null = null,
+    code: string | null = null,
+    details: string[] = [],
+  ) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.code = code;
     this.details = details;
   }
-}
 
-export function fromMessages(messages: string[], status: number | null): ApiError | null {
-  const [primary, ...rest] = messages;
-  if (!primary) return null;
-  return new ApiError(primary, status, [primary, ...rest]);
+  is(code: string): boolean {
+    return this.code === code;
+  }
 }
 
 export function toApiError(error: unknown): ApiError {
@@ -32,18 +37,28 @@ export function toApiError(error: unknown): ApiError {
           ? 'You appear to be offline. Check your connection and try again.'
           : 'Could not reach the server. Is the backend running?',
         null,
+        null,
       );
     }
 
-    return (
-      fromMessages(readBody(response.data), response.status) ??
-      new ApiError(statusFallback(response.status), response.status)
-    );
+    const info = readErrorInfo(response.data);
+    if (info) {
+      const details = readBody(response.data);
+      const [primary] = details;
+      return new ApiError(primary ?? info.message, response.status, info.code, details);
+    }
+
+    const [primary, ...rest] = readBody(response.data);
+    if (primary) {
+      return new ApiError(primary, response.status, null, [primary, ...rest]);
+    }
+
+    return new ApiError(statusFallback(response.status), response.status, null);
   }
 
   if (error instanceof Error && error.message.trim().length > 0) {
     return new ApiError(error.message);
   }
 
-  return new ApiError('An unexpected error occurred.');
+  return new ApiError('An unexpected error occurred.', null, ErrorCode.OperationFailed);
 }

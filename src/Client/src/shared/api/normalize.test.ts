@@ -1,31 +1,44 @@
 import { describe, expect, it } from 'vitest';
-import { readBody, readEnvelopeError, splitMessages, statusFallback } from './normalize';
+import { ErrorCode, readBody, readErrorInfo, splitMessages, statusFallback } from './normalize';
 
-describe('splitMessages', () => {
-  it('splits the newline-joined messages the backend produces', () => {
-    expect(splitMessages('First failure\nSecond failure')).toEqual([
-      'First failure',
-      'Second failure',
-    ]);
+describe('readErrorInfo', () => {
+  it('reads the API error envelope', () => {
+    const body = { error: { code: 'invalid_credentials', message: 'Invalid username or password.' } };
+    expect(readErrorInfo(body)).toEqual({
+      code: 'invalid_credentials',
+      message: 'Invalid username or password.',
+    });
   });
 
-  it('drops blank lines and trims whitespace', () => {
-    expect(splitMessages('  padded  \n\n\n  other  ')).toEqual(['padded', 'other']);
+  it('falls back to a generic code when only a message is present', () => {
+    const info = readErrorInfo({ error: { message: 'Something went wrong' } });
+    expect(info?.message).toBe('Something went wrong');
+    expect(info?.code).toBe(ErrorCode.OperationFailed);
   });
 
-  it('returns nothing for an empty string', () => {
-    expect(splitMessages('   ')).toEqual([]);
+  it('returns null for a successful payload', () => {
+    expect(readErrorInfo({ data: { id: '1' } })).toBeNull();
+    expect(readErrorInfo({ data: [], page: 1, size: 24, itemsCount: 0 })).toBeNull();
+  });
+
+  it('returns null when the envelope carries nothing usable', () => {
+    expect(readErrorInfo({ error: null })).toBeNull();
+    expect(readErrorInfo({ error: {} })).toBeNull();
+    expect(readErrorInfo({ error: 'oops' })).toBeNull();
+    expect(readErrorInfo(null)).toBeNull();
+    expect(readErrorInfo('plain text')).toBeNull();
   });
 });
 
 describe('readBody', () => {
-  it('reads the project error_message contract', () => {
-    expect(readBody({ error_message: 'Invalid credentials' })).toEqual(['Invalid credentials']);
+  it('prefers the API error envelope', () => {
+    const body = { error: { code: 'bad_request', message: 'Subtotal must be greater than 0' } };
+    expect(readBody(body)).toEqual(['Subtotal must be greater than 0']);
   });
 
-  it('splits a multi-message error_message into separate entries', () => {
-    const body = { error_message: 'Latitude is required\nSubtotal must be positive' };
-    expect(readBody(body)).toEqual(['Latitude is required', 'Subtotal must be positive']);
+  it('splits a multi-line validation message into separate entries', () => {
+    const body = { error: { code: 'bad_request', message: 'Bad latitude\nBad subtotal' } };
+    expect(readBody(body)).toEqual(['Bad latitude', 'Bad subtotal']);
   });
 
   it('reads a bare string body', () => {
@@ -40,12 +53,8 @@ describe('readBody', () => {
     expect(readBody('{"unparsed":true}')).toEqual([]);
   });
 
-  it('falls back to ProblemDetails detail', () => {
+  it('falls back to ProblemDetails emitted before the app handler runs', () => {
     expect(readBody({ detail: 'Access denied', status: 403 })).toEqual(['Access denied']);
-  });
-
-  it('prefers error_message over ProblemDetails fields', () => {
-    expect(readBody({ error_message: 'Specific', detail: 'Generic' })).toEqual(['Specific']);
   });
 
   it('flattens ASP.NET model-binding validation errors', () => {
@@ -58,28 +67,16 @@ describe('readBody', () => {
     expect(readBody(undefined)).toEqual([]);
     expect(readBody(42)).toEqual([]);
     expect(readBody({ unrelated: 'value' })).toEqual([]);
-    expect(readBody({ error_message: '   ' })).toEqual([]);
   });
 });
 
-describe('readEnvelopeError', () => {
-  it('detects a failure reported inside a 200 OK body', () => {
-    expect(readEnvelopeError({ error_message: 'Geocoding failed' })).toEqual(['Geocoding failed']);
+describe('splitMessages', () => {
+  it('drops blank lines and trims whitespace', () => {
+    expect(splitMessages('  padded  \n\n\n  other  ')).toEqual(['padded', 'other']);
   });
 
-  it('ignores a successful payload', () => {
-    expect(readEnvelopeError({ created_order: { id: '1' } })).toEqual([]);
-    expect(readEnvelopeError({ items: [], total_count: 0 })).toEqual([]);
-  });
-
-  it('ignores a non-string error_message', () => {
-    expect(readEnvelopeError({ error_message: null })).toEqual([]);
-    expect(readEnvelopeError({ error_message: 123 })).toEqual([]);
-  });
-
-  it('ignores non-object bodies', () => {
-    expect(readEnvelopeError('plain text')).toEqual([]);
-    expect(readEnvelopeError(null)).toEqual([]);
+  it('returns nothing for an empty string', () => {
+    expect(splitMessages('   ')).toEqual([]);
   });
 });
 

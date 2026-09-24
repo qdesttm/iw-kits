@@ -1,16 +1,17 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
-import { env } from '../config/env.js';
-import { clearSession, getAccessToken, getRefreshToken, setTokens } from '../storage/tokens.js';
-import { ApiError, fromMessages, toApiError } from './api-error.js';
-import { readEnvelopeError } from './normalize.js';
+import { env } from '../config/env';
+import { clearSession, getAccessToken, getRefreshToken, setTokens } from '../storage/tokens';
+import { ApiError, toApiError } from './api-error';
+import { ErrorCode } from './normalize';
 
 export const http = axios.create({ baseURL: env.apiBaseUrl });
 
 const refreshClient = axios.create({ baseURL: env.apiBaseUrl });
 
-function isAuthRequest(url: string | undefined): boolean {
+function isTokenRequest(url: string | undefined): boolean {
   if (!url) return false;
-  return url.startsWith('/auth') || url.startsWith(`${env.apiBaseUrl}/auth`);
+  const path = url.startsWith(env.apiBaseUrl) ? url.slice(env.apiBaseUrl.length) : url;
+  return path.startsWith('/tokens');
 }
 
 http.interceptors.request.use((config) => {
@@ -21,14 +22,6 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
-http.interceptors.response.use((response) => {
-  const envelopeError = fromMessages(readEnvelopeError(response.data), response.status);
-  if (envelopeError) {
-    throw envelopeError;
-  }
-  return response;
-});
-
 let refreshInFlight: Promise<string | null> | null = null;
 
 async function refreshAccessToken(): Promise<string | null> {
@@ -36,9 +29,12 @@ async function refreshAccessToken(): Promise<string | null> {
   if (!refreshToken) return null;
 
   try {
-    const response = await refreshClient.post('/auth/refresh', { refresh_token: refreshToken });
-    const accessToken = response.data?.access_token;
-    const nextRefreshToken = response.data?.refresh_token;
+    const response = await refreshClient.post('/tokens/refresh', null, {
+      params: { refreshToken },
+    });
+
+    const accessToken = response.data?.accessToken;
+    const nextRefreshToken = response.data?.refreshToken;
 
     if (typeof accessToken === 'string' && typeof nextRefreshToken === 'string') {
       setTokens(accessToken, nextRefreshToken);
@@ -69,7 +65,7 @@ http.interceptors.response.use(
       | (InternalAxiosRequestConfig & { _retry?: boolean })
       | undefined;
 
-    if (!request || isAuthRequest(request.url) || error.response?.status !== 401 || request._retry) {
+    if (!request || isTokenRequest(request.url) || error.response?.status !== 401 || request._retry) {
       return Promise.reject(toApiError(error));
     }
 
@@ -82,7 +78,13 @@ http.interceptors.response.use(
 
     if (!accessToken) {
       redirectToLogin();
-      return Promise.reject(new ApiError('Your session has expired. Please sign in again.', 401));
+      return Promise.reject(
+        new ApiError(
+          'Your session has expired. Please sign in again.',
+          401,
+          ErrorCode.SessionExpired,
+        ),
+      );
     }
 
     request.headers.Authorization = `Bearer ${accessToken}`;

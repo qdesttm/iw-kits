@@ -3,107 +3,165 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { AuthProvider } from './AuthProvider';
 import { useAuth } from './useAuth';
 
+const issueTokensMock = vi.fn();
+const getProfileMock = vi.fn();
 const registerMock = vi.fn();
 
 vi.mock('../api/auth.api', () => ({
   sanitizeUser: (user: unknown) => user ?? null,
   authApi: {
-    login: vi.fn(),
+    issueTokens: (...args: unknown[]) => issueTokensMock(...args),
+    refreshTokens: vi.fn(),
     register: (...args: unknown[]) => registerMock(...args),
-    refresh: vi.fn(),
+    getProfile: () => getProfileMock(),
   },
 }));
 
 let lastResult: string | null | undefined;
 
-function Probe() {
-  const { register, isAuthenticated } = useAuth();
+function Probe({ action }: { action: 'login' | 'register' }) {
+  const auth = useAuth();
 
   return (
     <div>
-      <span data-testid="authenticated">{String(isAuthenticated)}</span>
+      <span data-testid="authenticated">{String(auth.isAuthenticated)}</span>
+      <span data-testid="loading">{String(auth.loading)}</span>
+      <span data-testid="username">{auth.user?.username ?? ''}</span>
       <button
         onClick={() => {
-          void register('someone', 'secret123').then((result) => {
+          void auth[action]('someone', 'secret123').then((result) => {
             lastResult = result;
           });
         }}
       >
-        register
+        go
       </button>
     </div>
   );
 }
 
-function renderProbe() {
+function renderProbe(action: 'login' | 'register' = 'login') {
   return render(
     <AuthProvider>
-      <Probe />
+      <Probe action={action} />
     </AuthProvider>,
   );
 }
 
-describe('AuthProvider.register', () => {
+const adminProfile = { id: '1', username: 'someone', role: 'admin' };
+const tokens = { accessToken: 'access-1', refreshToken: 'refresh-1' };
+
+describe('AuthProvider', () => {
   beforeEach(() => {
     localStorage.clear();
+    issueTokensMock.mockReset();
+    getProfileMock.mockReset();
     registerMock.mockReset();
     lastResult = undefined;
   });
 
-  it('signs the new account in and persists the session', async () => {
-    registerMock.mockResolvedValue({
-      access_token: 'access-1',
-      refresh_token: 'refresh-1',
-      user: { id: '1', username: 'someone', role: 'admin' },
-      error_message: null,
-    });
+  it('logs in by issuing tokens and then loading the profile', async () => {
+    issueTokensMock.mockResolvedValue(tokens);
+    getProfileMock.mockResolvedValue(adminProfile);
 
     renderProbe();
-    screen.getByText('register').click();
+    screen.getByText('go').click();
 
     await waitFor(() => expect(lastResult).toBeNull());
     expect(localStorage.getItem('access_token')).toBe('access-1');
     expect(localStorage.getItem('refresh_token')).toBe('refresh-1');
     await waitFor(() => expect(screen.getByTestId('authenticated').textContent).toBe('true'));
+    expect(screen.getByTestId('username').textContent).toBe('someone');
   });
 
-  it('surfaces a server error message and stores nothing', async () => {
-    registerMock.mockResolvedValue({
-      access_token: null,
-      refresh_token: null,
-      user: null,
-      error_message: 'Username already taken',
+  it('stores tokens before requesting the profile', async () => {
+    issueTokensMock.mockResolvedValue(tokens);
+    getProfileMock.mockImplementation(() => {
+      expect(localStorage.getItem('access_token')).toBe('access-1');
+      return Promise.resolve(adminProfile);
     });
 
     renderProbe();
-    screen.getByText('register').click();
+    screen.getByText('go').click();
 
-    await waitFor(() => expect(lastResult).toBe('Username already taken'));
+    await waitFor(() => expect(lastResult).toBeNull());
+    expect(getProfileMock).toHaveBeenCalled();
+  });
+
+  it('rejects a non-admin account and clears the session', async () => {
+    issueTokensMock.mockResolvedValue(tokens);
+    getProfileMock.mockResolvedValue({ id: '2', username: 'someone', role: 'user' });
+
+    renderProbe();
+    screen.getByText('go').click();
+
+    await waitFor(() =>
+      expect(lastResult).toBe('Only admin users are allowed to access this application'),
+    );
     expect(localStorage.getItem('access_token')).toBeNull();
     expect(screen.getByTestId('authenticated').textContent).toBe('false');
   });
 
-  it('fails safely when the response is missing tokens', async () => {
-    registerMock.mockResolvedValue({
-      access_token: null,
-      refresh_token: null,
-      user: { id: '1', username: 'someone', role: 'admin' },
-      error_message: null,
-    });
+  it('surfaces a failure from the token endpoint', async () => {
+    issueTokensMock.mockRejectedValue(new Error('Invalid username or password.'));
 
     renderProbe();
-    screen.getByText('register').click();
+    screen.getByText('go').click();
 
-    await waitFor(() => expect(lastResult).toBe('Registration failed. Please try again.'));
+    await waitFor(() => expect(lastResult).toBe('Invalid username or password.'));
     expect(localStorage.getItem('access_token')).toBeNull();
+    expect(getProfileMock).not.toHaveBeenCalled();
   });
 
-  it('normalizes a thrown error', async () => {
-    registerMock.mockRejectedValue(new Error('Network down'));
+  it('registers and then signs in with the same credentials', async () => {
+    registerMock.mockResolvedValue(undefined);
+    issueTokensMock.mockResolvedValue(tokens);
+    getProfileMock.mockResolvedValue(adminProfile);
+
+    renderProbe('register');
+    screen.getByText('go').click();
+
+    await waitFor(() => expect(lastResult).toBeNull());
+    expect(registerMock).toHaveBeenCalledWith('someone', 'secret123');
+    expect(issueTokensMock).toHaveBeenCalledWith('someone', 'secret123');
+    await waitFor(() => expect(screen.getByTestId('authenticated').textContent).toBe('true'));
+  });
+
+  it('does not attempt sign-in when registration fails', async () => {
+    registerMock.mockRejectedValue(new Error('Username is already taken.'));
+
+    renderProbe('register');
+    screen.getByText('go').click();
+
+    await waitFor(() => expect(lastResult).toBe('Username is already taken.'));
+    expect(issueTokensMock).not.toHaveBeenCalled();
+  });
+
+  it('restores a stored session from the profile endpoint', async () => {
+    localStorage.setItem('access_token', 'access-1');
+    getProfileMock.mockResolvedValue(adminProfile);
 
     renderProbe();
-    screen.getByText('register').click();
 
-    await waitFor(() => expect(lastResult).toBe('Network down'));
+    await waitFor(() => expect(screen.getByTestId('authenticated').textContent).toBe('true'));
+    expect(screen.getByTestId('loading').textContent).toBe('false');
+  });
+
+  it('clears a stored session whose profile cannot be loaded', async () => {
+    localStorage.setItem('access_token', 'access-1');
+    localStorage.setItem('refresh_token', 'refresh-1');
+    getProfileMock.mockRejectedValue(new Error('unauthorized'));
+
+    renderProbe();
+
+    await waitFor(() => expect(localStorage.getItem('access_token')).toBeNull());
+    expect(screen.getByTestId('authenticated').textContent).toBe('false');
+  });
+
+  it('does not call the profile endpoint without a stored token', async () => {
+    renderProbe();
+
+    await waitFor(() => expect(screen.getByTestId('loading').textContent).toBe('false'));
+    expect(getProfileMock).not.toHaveBeenCalled();
   });
 });

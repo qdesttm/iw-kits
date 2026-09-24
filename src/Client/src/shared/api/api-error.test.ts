@@ -1,6 +1,7 @@
 import { AxiosError, AxiosHeaders } from 'axios';
 import { describe, expect, it } from 'vitest';
 import { ApiError, toApiError } from './api-error';
+import { ErrorCode } from './normalize';
 
 function axiosErrorWith(status: number, data: unknown): AxiosError {
   const config = { headers: new AxiosHeaders() };
@@ -19,31 +20,55 @@ function networkError(): AxiosError {
 
 describe('toApiError', () => {
   it('passes an existing ApiError through unchanged', () => {
-    const original = new ApiError('Already normalized', 400);
+    const original = new ApiError('Already normalized', 400, ErrorCode.BadRequest);
     expect(toApiError(original)).toBe(original);
   });
 
-  it('reads the server message from a 400 body', () => {
-    const result = toApiError(axiosErrorWith(400, { error_message: 'Subtotal must be positive' }));
-    expect(result.message).toBe('Subtotal must be positive');
-    expect(result.status).toBe(400);
+  it('reads code and message from the API error envelope', () => {
+    const result = toApiError(
+      axiosErrorWith(401, {
+        error: { code: ErrorCode.InvalidCredentials, message: 'Invalid username or password.' },
+      }),
+    );
+
+    expect(result.message).toBe('Invalid username or password.');
+    expect(result.code).toBe(ErrorCode.InvalidCredentials);
+    expect(result.status).toBe(401);
+    expect(result.is(ErrorCode.InvalidCredentials)).toBe(true);
   });
 
-  it('exposes every validation message in details', () => {
-    const result = toApiError(axiosErrorWith(400, { error_message: 'Bad latitude\nBad subtotal' }));
+  it('identifies a taken username so the UI can react to the code', () => {
+    const result = toApiError(
+      axiosErrorWith(400, {
+        error: { code: ErrorCode.UsernameAlreadyTaken, message: 'Username is already taken.' },
+      }),
+    );
+
+    expect(result.is(ErrorCode.UsernameAlreadyTaken)).toBe(true);
+  });
+
+  it('exposes every line of a multi-message validation error', () => {
+    const result = toApiError(
+      axiosErrorWith(400, {
+        error: { code: ErrorCode.BadRequest, message: 'Bad latitude\nBad subtotal' },
+      }),
+    );
+
     expect(result.message).toBe('Bad latitude');
     expect(result.details).toEqual(['Bad latitude', 'Bad subtotal']);
-  });
-
-  it('reads a bare string body', () => {
-    const result = toApiError(axiosErrorWith(400, 'File is empty or missing.'));
-    expect(result.message).toBe('File is empty or missing.');
   });
 
   it('falls back to a status message when the body says nothing useful', () => {
     const result = toApiError(axiosErrorWith(500, { unrelated: true }));
     expect(result.message).toMatch(/unexpected error/i);
     expect(result.status).toBe(500);
+    expect(result.code).toBeNull();
+  });
+
+  it('handles an empty 401 body from the JWT middleware', () => {
+    const result = toApiError(axiosErrorWith(401, ''));
+    expect(result.message).toMatch(/session has expired/i);
+    expect(result.status).toBe(401);
   });
 
   it('does not leak an HTML error page into the message', () => {

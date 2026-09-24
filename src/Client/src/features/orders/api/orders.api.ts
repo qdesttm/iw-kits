@@ -12,16 +12,26 @@ const ORDERS_URL = '/orders';
 export const ordersApi = {
   getAll: async (query?: OrdersQuery): Promise<OrdersResponse> => {
     const response = await http.get(ORDERS_URL, { params: query });
+    const body = response.data;
+
     return {
-      items: response.data?.items || [],
-      total_count: response.data?.total_count || 0,
-      total_pages: response.data?.total_pages || 0,
+      items: Array.isArray(body?.data) ? (body.data as Order[]) : [],
+      page: body?.page ?? 1,
+      size: body?.size ?? 0,
+      itemsCount: body?.itemsCount ?? 0,
     };
   },
 
-  create: async (data: CreateOrderDto): Promise<Order> => {
-    const response = await http.post(ORDERS_URL, data);
-    return response.data?.created_order;
+  create: async (data: CreateOrderDto): Promise<string> => {
+    const response = await http.post(ORDERS_URL, null, {
+      params: {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        subtotal: data.subtotal,
+      },
+    });
+
+    return String(response.data?.data ?? '');
   },
 
   importCsv: async (
@@ -39,7 +49,7 @@ export const ordersApi = {
     });
 
     return {
-      imported_total: response.data?.imported_total ?? 0,
+      importedTotal: response.data?.importedTotal ?? 0,
       errors: Array.isArray(response.data?.errors) ? response.data.errors : [],
     };
   },
