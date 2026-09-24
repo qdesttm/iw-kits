@@ -1,5 +1,6 @@
 using System;
 using FluentValidation;
+using IWKits.Core.Common.Models;
 
 namespace IWKits.Api.AspNetCore.Modules.Orders.GetOrders;
 
@@ -27,5 +28,13 @@ internal sealed class GetOrdersModelValidator : AbstractValidator<GetOrdersModel
 		RuleFor(x => x.Before)
 			.GreaterThanOrEqualTo(x => x.After ?? DateTime.MinValue)
 			.When(x => x.Before.HasValue && x.After.HasValue);
+
+		RuleFor(x => x.SortBy)
+			.IsEnumName(typeof(OrderRecordSortFields), caseSensitive: false)
+			.When(x => !string.IsNullOrEmpty(x.SortBy));
+
+		RuleFor(x => x.SortDirection)
+			.IsEnumName(typeof(SortDirection), caseSensitive: false)
+			.When(x => !string.IsNullOrEmpty(x.SortDirection));
 	}
 }

@@ -9,8 +9,8 @@ internal sealed class GetOrdersModel
 	public decimal? MaxTotalAmount { get; init; }
 	public DateTime? After { get; init; }
 	public DateTime? Before { get; init; }
-	public OrderRecordSortFields? SortBy { get; init; }
-	public SortDirection? SortDirection { get; init; }
+	public string? SortBy { get; init; }
+	public string? SortDirection { get; init; }
 	public int? Page { get; init; }
 	public int? Size { get; init; }
 }
