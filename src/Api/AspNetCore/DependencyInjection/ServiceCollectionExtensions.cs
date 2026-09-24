@@ -28,7 +28,6 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddInfrastructure(this IServiceCollection services)
 	{
 		services.AddMemoryCache();
-		services.AddSwaggerGen();
 
 		services.AddExceptionHandler<ServiceExceptionHandler>();
 		services.AddProblemDetails();
@@ -122,7 +121,7 @@ public static class ServiceCollectionExtensions
 	}
 
 	/// <summary>
-	/// Configures HTTP JSON serialization rules and policies for Minimal API.
+	/// Configures HTTP JSON serialization rules and policies for Minimal API and Swagger metadata.
 	/// </summary>
 	/// <param name="services">The service collection instance.</param>
 	/// <returns>The modified service collection for chaining.</returns>
@@ -135,7 +134,14 @@ public static class ServiceCollectionExtensions
 			options.SerializerOptions.PropertyNameCaseInsensitive = true;
 			options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 			options.SerializerOptions.AllowOutOfOrderMetadataProperties = true;
-			options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+			options.SerializerOptions.Converters.Add(
+				new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+		});
+
+		services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+		{
+			options.JsonSerializerOptions.Converters.Add(
+				new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
 		});
 
 		return services;
