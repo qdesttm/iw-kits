@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 namespace IWKits.Api.AspNetCore.DependencyInjection;
 
@@ -29,11 +31,6 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddMemoryCache();
 
-		services.AddSwaggerGen(options =>
-		{
-			options.DescribeAllParametersInCamelCase();
-		});
-
 		services.AddExceptionHandler<ServiceExceptionHandler>();
 		services.AddProblemDetails();
 
@@ -43,6 +40,8 @@ public static class ServiceCollectionExtensions
 		services.AddValidatorsFromAssemblyContaining<ServiceExceptionHandler>(includeInternalTypes: true);
 
 		services.AddVersioning();
+		services.AddSwaggerDocumentation();
+		services.AddSwaggerSecurity();
 		services.AddJwtAuthentication();
 
 		services.ConfigureNetworkHeaders();
@@ -70,6 +69,51 @@ public static class ServiceCollectionExtensions
 		{
 			options.GroupNameFormat = "'v'VVV";
 			options.SubstituteApiVersionInUrl = true;
+		});
+
+		return services;
+	}
+
+	/// <summary>
+	/// Configures Swagger API documentation.
+	/// </summary>
+	/// <param name="services">The service collection.</param>
+	/// <returns>The modified service collection.</returns>
+	private static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
+	{
+		services.AddEndpointsApiExplorer();
+
+		services.AddSwaggerGen(options =>
+		{
+			options.DescribeAllParametersInCamelCase();
+		});
+
+		return services;
+	}
+
+	/// <summary>
+	/// Configures Swagger API security.
+	/// </summary>
+	/// <param name="services">The service collection.</param>
+	/// <returns>The modified service collection.</returns>
+	private static IServiceCollection AddSwaggerSecurity(this IServiceCollection services)
+	{
+		services.ConfigureSwaggerGen(options =>
+		{
+			options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+			{
+				Name = "Authorization",
+				Type = SecuritySchemeType.ApiKey,
+				Scheme = "Bearer",
+				BearerFormat = "JWT",
+				In = ParameterLocation.Header,
+				Description = "Enter 'Bearer' [space] and then your valid token.\n\nExample: \"Bearer eyJhbGciOiJIUzI1Ni...\""
+			});
+
+			options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+			{
+				[new OpenApiSecuritySchemeReference("Bearer", document)] = []
+			});
 		});
 
 		return services;
