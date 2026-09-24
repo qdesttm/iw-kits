@@ -4,17 +4,9 @@ export interface AuthUser {
   role: string;
 }
 
-export interface AuthResponse {
-  access_token: string | null;
-  refresh_token: string | null;
-  user: AuthUser | null;
-  error_message: string | null;
-}
-
-export interface RefreshResponse {
-  access_token: string | null;
-  refresh_token: string | null;
-  error_message: string | null;
+export interface TokensResponse {
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface AuthContextValue {

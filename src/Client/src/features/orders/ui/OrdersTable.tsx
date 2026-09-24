@@ -3,7 +3,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table/index.js';
 import type { FilterValue, SorterResult } from 'antd/es/table/interface.js';
 import { colors } from '@/shared/config/theme';
-import type { Order } from '../model/order.types';
+import type { Order, OrderSortField } from '../model/order.types';
 
 const columns: ColumnsType<Order> = [
   { title: 'ID', dataIndex: 'id', key: 'id', width: 80, render: (id: string) => <span title={id}>{id?.substring(0, 8)}...</span> },
@@ -24,20 +24,20 @@ const columns: ColumnsType<Order> = [
   { title: 'Subtotal', dataIndex: 'subtotal', key: 'subtotal', width: 100, sorter: true, render: (val) => `$${val?.toFixed(2) || 0}` },
   {
     title: 'Tax',
-    key: 'tax_amount',
-    dataIndex: 'tax_amount',
+    key: 'taxAmount',
+    dataIndex: 'taxAmount',
     width: 110,
     sorter: true,
     render: (_, record) => (
-      <Tooltip title={`Rate: ${((record.composite_tax_rate || 0) * 100).toFixed(3)}%`}>
-        <span>${record.tax_amount?.toFixed(2) || 0} <InfoCircleOutlined style={{ color: colors.primary, fontSize: 12 }} /></span>
+      <Tooltip title={`Rate: ${((record.compositeTaxRate || 0) * 100).toFixed(3)}%`}>
+        <span>${record.taxAmount?.toFixed(2) || 0} <InfoCircleOutlined style={{ color: colors.primary, fontSize: 12 }} /></span>
       </Tooltip>
     )
   },
   {
     title: 'Total',
-    dataIndex: 'total_amount',
-    key: 'total_amount',
+    dataIndex: 'totalAmount',
+    key: 'totalAmount',
     width: 100,
     sorter: true,
     render: (val) => <strong style={{ color: colors.primary }}>${val?.toFixed(2) || 0}</strong>
@@ -48,10 +48,10 @@ const columns: ColumnsType<Order> = [
     width: 320,
     render: (_, record) => (
       <Space orientation="horizontal" size={[0, 4]} wrap>
-        {record.breakdown?.state_rate > 0 && <Tag color="blue">State: {record.breakdown.state_rate}</Tag>}
-        {record.breakdown?.city_rate > 0 && <Tag color="cyan">City: {record.breakdown.city_rate}</Tag>}
-        {record.breakdown?.county_rate > 0 && <Tag color="purple">County: {record.breakdown.county_rate}</Tag>}
-        {record.breakdown?.special_rate > 0 && <Tag color="orange">Special: {record.breakdown.special_rate}</Tag>}
+        {record.breakdown?.stateRate > 0 && <Tag color="blue">State: {record.breakdown.stateRate}</Tag>}
+        {record.breakdown?.cityRate > 0 && <Tag color="cyan">City: {record.breakdown.cityRate}</Tag>}
+        {record.breakdown?.countyRate > 0 && <Tag color="purple">County: {record.breakdown.countyRate}</Tag>}
+        {record.breakdown?.specialRate > 0 && <Tag color="orange">Special: {record.breakdown.specialRate}</Tag>}
       </Space>
     )
   },
@@ -71,11 +71,11 @@ const columns: ColumnsType<Order> = [
   },
 ];
 
-const sortFieldMap: Record<string, string> = {
+const sortFieldMap: Record<string, OrderSortField> = {
   timestamp: 'timestamp',
   subtotal: 'subtotal',
-  tax_amount: 'tax_amount',
-  total_amount: 'total_amount',
+  taxAmount: 'taxAmount',
+  totalAmount: 'totalAmount',
 };
 
 interface OrdersTableProps {

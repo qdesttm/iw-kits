@@ -11,7 +11,7 @@ export function useImportOrders() {
   const mutation = useMutation<ImportOrdersResponse, unknown, File>({
     mutationFn: (file) => ordersApi.importCsv(file, setProgress),
     onSuccess: (result) => {
-      if (result.imported_total > 0) {
+      if (result.importedTotal > 0) {
         void queryClient.invalidateQueries({ queryKey: ordersKeys.all });
       }
     },

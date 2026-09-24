@@ -1,5 +1,6 @@
-import { Modal, Alert, List, Typography, Button, Space } from 'antd';
+import { Modal, Alert, List, Typography, Button, Space, Tag } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
+import type { ApiErrorInfo } from '@/shared/api';
 import type { ImportOrdersResponse } from '../model/order.types';
 
 const { Text } = Typography;
@@ -9,8 +10,14 @@ interface ImportResultModalProps {
   onClose: () => void;
 }
 
-function downloadErrors(errors: string[]): void {
-  const blob = new Blob([errors.join('\n')], { type: 'text/plain;charset=utf-8' });
+function formatError(error: ApiErrorInfo): string {
+  return error.code ? `${error.code}: ${error.message}` : error.message;
+}
+
+function downloadErrors(errors: ApiErrorInfo[]): void {
+  const blob = new Blob([errors.map(formatError).join('\n')], {
+    type: 'text/plain;charset=utf-8',
+  });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement('a');
@@ -24,7 +31,7 @@ function downloadErrors(errors: string[]): void {
 export function ImportResultModal({ result, onClose }: ImportResultModalProps) {
   if (!result) return null;
 
-  const { imported_total: imported, errors } = result;
+  const { importedTotal: imported, errors } = result;
   const failed = errors.length;
   const hasFailures = failed > 0;
 
@@ -68,12 +75,15 @@ export function ImportResultModal({ result, onClose }: ImportResultModalProps) {
               dataSource={errors}
               renderItem={(error, index) => (
                 <List.Item>
-                  <Text type="danger" style={{ fontSize: 13 }}>
-                    <Text type="secondary" style={{ fontSize: 13, marginRight: 8 }}>
+                  <Space size={8} wrap>
+                    <Text type="secondary" style={{ fontSize: 13 }}>
                       {index + 1}.
                     </Text>
-                    {error}
-                  </Text>
+                    {error.code && <Tag color="red">{error.code}</Tag>}
+                    <Text type="danger" style={{ fontSize: 13 }}>
+                      {error.message}
+                    </Text>
+                  </Space>
                 </List.Item>
               )}
             />

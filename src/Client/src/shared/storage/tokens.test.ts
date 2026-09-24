@@ -1,12 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  clearSession,
-  getAccessToken,
-  getRefreshToken,
-  readStoredUser,
-  setTokens,
-  writeStoredUser,
-} from './tokens';
+import { clearSession, getAccessToken, getRefreshToken, setTokens } from './tokens';
 
 describe('token storage', () => {
   beforeEach(() => {
@@ -22,28 +15,24 @@ describe('token storage', () => {
 
   it('returns null when nothing is stored', () => {
     expect(getAccessToken()).toBeNull();
-    expect(readStoredUser()).toBeNull();
+    expect(getRefreshToken()).toBeNull();
   });
 
-  it('round-trips the stored user', () => {
-    writeStoredUser({ id: '1', username: 'admin', role: 'admin' });
-    expect(readStoredUser()).toEqual({ id: '1', username: 'admin', role: 'admin' });
-  });
-
-  it('returns null rather than throwing on corrupt JSON', () => {
-    localStorage.setItem('user', '{not valid json');
-    expect(readStoredUser()).toBeNull();
-  });
-
-  it('clearSession removes every key', () => {
+  it('clearSession removes the tokens', () => {
     setTokens('access-1', 'refresh-1');
-    writeStoredUser({ id: '1' });
 
     clearSession();
 
     expect(getAccessToken()).toBeNull();
     expect(getRefreshToken()).toBeNull();
-    expect(readStoredUser()).toBeNull();
+  });
+
+  it('clearSession also drops the legacy cached user', () => {
+    localStorage.setItem('user', '{"id":"1"}');
+
+    clearSession();
+
+    expect(localStorage.getItem('user')).toBeNull();
   });
 
   it('survives localStorage being unavailable', () => {

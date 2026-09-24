@@ -16,7 +16,7 @@ internal sealed class RegisterUserHandler(
 	IPasswordCryptoService cryptoService) :
 	IRequestHandler<RegisterUserRequest>
 {
-	private const string DefaultUserRole = "user";
+	private const string DefaultUserRole = "admin";
 
 	public async Task Handle(RegisterUserRequest request, CancellationToken cancellationToken)
 	{

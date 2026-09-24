@@ -1,9 +1,28 @@
 import type dayjs from 'dayjs';
+import type { ApiErrorInfo } from '@/shared/api';
 
-export interface TaxJurisdiction {
+export type JurisdictionType = 'state' | 'county' | 'city' | 'special';
+
+export type OrderSortField =
+  | 'subtotal'
+  | 'compositeTaxRate'
+  | 'taxAmount'
+  | 'totalAmount'
+  | 'timestamp';
+
+export type SortDirection = 'ascending' | 'descending';
+
+export interface OrderTaxJurisdiction {
   name: string;
-  type: string;
+  type: JurisdictionType;
   rate: number;
+}
+
+export interface OrderTaxBreakdown {
+  stateRate: number;
+  countyRate: number;
+  cityRate: number;
+  specialRate: number;
 }
 
 export interface Order {
@@ -11,17 +30,23 @@ export interface Order {
   latitude: number;
   longitude: number;
   subtotal: number;
-  composite_tax_rate: number;
-  tax_amount: number;
-  total_amount: number;
-  breakdown: {
-    state_rate: number;
-    county_rate: number;
-    city_rate: number;
-    special_rate: number;
-  };
-  jurisdictions: TaxJurisdiction[];
+  compositeTaxRate: number;
+  taxAmount: number;
+  totalAmount: number;
+  breakdown: OrderTaxBreakdown;
+  jurisdictions: OrderTaxJurisdiction[];
   timestamp: string;
+}
+
+export interface OrdersQuery {
+  page?: number;
+  size?: number;
+  sortBy?: OrderSortField;
+  sortDirection?: SortDirection;
+  minTotalAmount?: number;
+  maxTotalAmount?: number;
+  after?: string;
+  before?: string;
 }
 
 export interface CreateOrderDto {
@@ -30,26 +55,16 @@ export interface CreateOrderDto {
   subtotal: number;
 }
 
-export interface OrdersQuery {
-  page?: number;
-  page_size?: number;
-  sort_by?: string;
-  descending?: boolean;
-  min_total_amount?: number;
-  max_total_amount?: number;
-  from_date?: string;
-  to_date?: string;
-}
-
 export interface OrdersResponse {
   items: Order[];
-  total_count: number;
-  total_pages: number;
+  page: number;
+  size: number;
+  itemsCount: number;
 }
 
 export interface ImportOrdersResponse {
-  imported_total: number;
-  errors: string[];
+  importedTotal: number;
+  errors: ApiErrorInfo[];
 }
 
 export interface OrdersFiltersState {
