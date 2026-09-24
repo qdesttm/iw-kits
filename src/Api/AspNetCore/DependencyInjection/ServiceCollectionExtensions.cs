@@ -29,6 +29,11 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddMemoryCache();
 
+		services.AddSwaggerGen(options =>
+		{
+			options.DescribeAllParametersInCamelCase();
+		});
+
 		services.AddExceptionHandler<ServiceExceptionHandler>();
 		services.AddProblemDetails();
 
